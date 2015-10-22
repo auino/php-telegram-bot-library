@@ -33,6 +33,15 @@ Hence, it is needed to instantiate a new bot:
 
 where `$token` is the Telegram token of your bot.
 
+Accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API), it's possible to get received data through the `$bot` object:
+
+```
+$message = $bot->read_post_message();
+$date = $message->message->date;
+$chatid = $message->message->chat->id;
+$text = $message->message->text;
+```
+
 It's now possible to set up triggers for specific commands:
 
 `$ts->register_trigger("trigger_welcome", ["/welcome","/hi"], 0);`
