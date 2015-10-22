@@ -97,7 +97,7 @@ db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date
 ```
 
 ### Sample Bot ###
-Here is the PHP code of a sample bot (before running it, put a `pic.jpg` picture in the root directory of `php-telegram-bot-library` and configure the `$token` variable).
+Here is the PHP code of a sample bot (check the `sample/sample.php` file and configure the `$token` variable before running it).
 
 ```
 // including the library
@@ -126,7 +126,7 @@ function trigger_help($p) {
 
 function trigger_photo($p) {
 	try {
-		$pic = "pic.jpg";
+		$pic = "lena.jpg";
 		$caption = "Look at this picture!";
 		$p->bot()->send_photo($p->chatid(), "@$pic", $caption);
 		return logarray("photo", "[$image] $caption"); // you choose the format you prefer
