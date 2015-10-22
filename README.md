@@ -41,7 +41,8 @@ where `trigger_welcome` is the name of the triggered/callback function and `0` i
 
 At this point, it is assumed that a `trigger_welcome` function is defined:
 
-```function trigger_welcome($p) {
+```
+function trigger_welcome($p) {
 	$answer = "Welcome...";
 	$p->bot()->send_message($p->chatid(), $answer);
 	return logarray('text', $answer);
