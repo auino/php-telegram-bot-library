@@ -49,13 +49,25 @@ At this point, it is assumed that a `trigger_welcome` function is defined.
 
 In particular, a single parameter of class `telegram_function_parameters` is always passed to the trigger/callback.
 
-The `logarray()` function returns an associative array with `type` and `content` keys, used for logging purposes:
-in this case, a `text` log (each value is good) containing the `$answer` content is returned.
-
 Following functions are available on `telegram_function_parameters` objects:
  * `bot()` returning the instance of the bot
  * `chatid()` returning the identifier of the origin chat/sender
  * `parameters()` returning an array of parameters passed to the function
+
+The `logarray()` function returns an associative array with `type` and `content` keys, used for logging purposes:
+in this case, a `text` log (each value is good) containing the `$answer` content is returned.
+
+This bot would simply respond `/welcome` and `/hi` messages with a simple `Welcome...` message.
+
+Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API), following methods are supported:
+ * send_action($to, $action)
+ * send_message($to, $msg, $id_msg=null, $reply=null)
+ * send_location($to, $lat, $lon, $id_msg=null, $reply=null)
+ * send_sticker($to, $sticker, $id_msg=null, $reply=null)
+ * send_video($to, $video, $id_msg=null, $reply=null)
+ * send_photo($to, $photo, $caption=null, $id_msg=null, $reply=null)
+ * send_audio($to, $audio, $id_msg=null, $reply=null)
+ * send_document($to, $document, $id_msg=null, $reply=null)
 
 After the triggers have been configured (it's possible to set up multiple triggers/callbacks: in case of multiple triggers associated to the same message/text, each callback is triggered), the triggering process have to be executed:
 
