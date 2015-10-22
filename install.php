@@ -1,4 +1,7 @@
 <?php
+// If needed, check the official project on GitHub:
+// https://github.com/auino/php-telegram-bot-library
+
 $REGISTERWEBHOOK = true;
 $SSLCERTIFICATEFILE = '@certificate.pem';
 $WEBHOOKURL = "https://www.yourwebsite.org/webhook.php";
