@@ -23,8 +23,11 @@ This library allows you to easily set up a PHP based Telegram Bot.
 ### Instructions ###
 First of all, the `lib` directory (as configured after installation, see `lib/config.php`) should be included into your project.
 Assuming that, the first step is to include the library: this is possible through a single simple command:
+
 `require('lib/telegram.php');`
 
 Hence, it is needed to instantiate a new bot:
+
 `$bot = new telegram_bot($token);`
+
 where `$token` is the Telegram token of your bot.
