@@ -80,7 +80,8 @@ If `$response` is `false`, something goes wrong.
 
 At the end, it's possible to log receive and send events:
 
-`db_log($botname, 'recv', $chatid, 'text', $text, $date);`
-
-`db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);`
+```
+db_log($botname, 'recv', $chatid, 'text', $text, $date);
+db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
+```
 
