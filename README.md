@@ -1,5 +1,5 @@
 # php-telegram-bot-library
-A PHP library to write Telegram Bots
+A PHP library to easily write Telegram Bots
 
 This library allows you to easily set up a PHP based Telegram Bot.
 
