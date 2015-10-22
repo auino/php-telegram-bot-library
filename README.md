@@ -21,7 +21,9 @@ This library allows you to easily set up a PHP based Telegram Bot.
  7. Remove `install.php` and the public SSL certificate inside of the root directory of `php-telegram-bot-library`
 
 ### Instructions ###
-First of all, the `lib` directory (as configured after installation, see `lib/config.php`) should be included into your project.
+First of all, if you're not familiar with it, consult [official Telegram Bot API](https://core.telegram.org/bots).
+
+Then, the `lib` directory (as configured after installation, see `lib/config.php`) should be included into your project.
 
 Assuming that, the first step is to include the library: this is possible through a single simple command:
 
@@ -44,7 +46,7 @@ $text = $message->message->text;
 
 It's now possible to set up triggers for specific commands:
 
-`$ts->register_trigger("trigger_welcome", ["/welcome","/hi"], 0);`
+`$ts->register_trigger("trigger_welcome", ["/start","/welcome","/hi"], 0);`
 
 where `trigger_welcome` is the name of the triggered/callback function and `0` identifies the number of parameters accepted (considering the remaining of the received text, splitted by spaces; `-1` is used to trigger independently on the number of parameters).
 
@@ -68,7 +70,7 @@ Following functions are available on `telegram_function_parameters` objects:
 The `logarray()` function returns an associative array with `type` and `content` keys, used for logging purposes:
 in this case, a `text` log (each value is good) containing the `$answer` content is returned.
 
-This bot would simply respond `/welcome` and `/hi` messages with a simple `Welcome...` message.
+This bot would simply respond `/start`, `/welcome`, and `/hi` messages with a simple `Welcome...` message.
 
 Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API), following methods are supported:
  * `send_action($to, $action)`
@@ -94,3 +96,76 @@ db_log($botname, 'recv', $chatid, 'text', $text, $date);
 db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
 ```
 
+### Sample Bot ###
+Here is the PHP code of a sample bot (before running it, put a `pic.jpg` picture in the root directory of `php-telegram-bot-library` and configure the `$token` variable).
+
+```
+// including the library
+require("lib/telegram.php");
+
+// basic configuration
+$token = "...";
+
+// callbacks definition
+function trigger_welcome($p) {
+	try {
+		$answer = "Welcome...";
+		$p->bot()->send_message($p->chatid(), $answer);
+		return logarray('text', $answer);
+	}
+	catch(Exception $e) { return false; } // you can also return what you prefer
+}
+function trigger_help($p) {
+	try {
+		$answer = "Try /help recursively...";
+		$p->bot()->send_message($p->chatid(), $answer);
+		return logarray('text', $answer);
+	}
+	catch(Exception $e) { return false; }
+}
+
+function trigger_photo($p) {
+	try {
+		$pic = "pic.jpg";
+		$caption = "Look at this picture!";
+		$p->bot()->send_photo($p->chatid(), "@$pic", $caption);
+		return logarray("photo", "[$image] $caption"); // you choose the format you prefer
+	}
+	catch(Exception $e) { return false; }
+}
+
+// instantiating a new bot
+$bot = new telegram_bot($token);
+
+// registering the triggers
+$ts->register_trigger("trigger_welcome", ["/start","/welcome","/hi"], 0);
+$ts->register_trigger("trigger_help", ["/help"], 0);
+$ts->register_trigger("trigger_help", ["/getphoto","/photo","/picture"], -1); // parameters count is ignore
+
+// receiving data sent from the user
+$message = $bot->read_post_message();
+$date = $message->message->date;
+$chatid = $message->message->chat->id;
+$text = $message->message->text;
+
+// running triggers management
+$response = $ts->run($bot, $chatid, $text);
+
+// checking triggering results
+if(!$response) { // an error occurred
+	if($chatid < 0) { // if message has been sent from a member of a Telegram group
+		// ignore it and do not reply (to avoid not necessary messages on the group)
+		$response = logarray('ignore', null);
+	}
+	else {
+		// reply with an error message
+		$answer = "Error...";
+		$bot->send_message($chatid, $answer);
+		$response = logarray('error', $answer);
+	}
+}
+
+// log messages exchange on the database
+db_log($botname, 'recv', $chatid, 'text', $text, $date);
+db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
+```
