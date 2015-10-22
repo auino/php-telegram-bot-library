@@ -25,11 +25,11 @@ First of all, the `lib` directory (as configured after installation, see `lib/co
 
 Assuming that, the first step is to include the library: this is possible through a single simple command:
 
-`require('lib/telegram.php');`
+```require('lib/telegram.php');```
 
 Hence, it is needed to instantiate a new bot:
 
-`$bot = new telegram_bot($token);`
+```$bot = new telegram_bot($token);```
 
 where `$token` is the Telegram token of your bot.
 
@@ -39,13 +39,13 @@ It's now possible to set up triggers for specific commands:
 
 where `trigger_welcome` is the name of the triggered/callback function and `0` identifies the number of parameters accepted (considering the remaining of the received text, splitted by spaces; `-1` is used to trigger independently on the number of parameters).
 
-At this point, it is assumed that a `trigger_welcome` function is defined.
+At this point, it is assumed that a `trigger_welcome` function is defined:
 
-`function trigger_welcome($p) {
+```function trigger_welcome($p) {
 	$answer = "Welcome...";
 	$p->bot()->send_message($p->chatid(), $answer);
 	return logarray('text', $answer);
-}`
+}```
 
 In particular, a single parameter of class `telegram_function_parameters` is always passed to the trigger/callback.
 
@@ -78,7 +78,7 @@ If `$response` is `false`, something goes wrong.
 
 At the end, it's possible to log receive and send events:
 
-`db_log($botname, 'recv', $chatid, 'text', $text, $date);
+```db_log($botname, 'recv', $chatid, 'text', $text, $date);```
 
-db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);`
+```db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);```
 
