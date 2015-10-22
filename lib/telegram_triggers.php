@@ -51,22 +51,4 @@ class telegram_trigger_set {
 		return false;
 	}
 }
-
-/*
-// Example usage:
-
-// callbacks declaration
-function test_nopar() { echo "No parameters\n"; }
-function test_onepar($p) { echo "One parameter passed: $p\n"; }
-function test_infpar($p=null) { echo "pars:"; print_r($p); }
-
-$ts = new telegram_trigger_set("botname");
-$ts->register_trigger("test_nopar", "/nopar", 0);
-$ts->register_trigger("test_onepar", "/onepar", 1);
-$ts->register_trigger("test_infpar", "/infpar", -1);
-
-$ts->run("bot_obj", "chatid", "/nopar");
-$ts->run("bot_obj", "chatid", "/onepar PAR");
-$ts->run("bot_obj", "chatid", "/infpar 1 2 3");
-*/
 ?>
