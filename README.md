@@ -60,14 +60,14 @@ in this case, a `text` log (each value is good) containing the `$answer` content
 This bot would simply respond `/welcome` and `/hi` messages with a simple `Welcome...` message.
 
 Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API), following methods are supported:
- * send_action($to, $action)
- * send_message($to, $msg, $id_msg=null, $reply=null)
- * send_location($to, $lat, $lon, $id_msg=null, $reply=null)
- * send_sticker($to, $sticker, $id_msg=null, $reply=null)
- * send_video($to, $video, $id_msg=null, $reply=null)
- * send_photo($to, $photo, $caption=null, $id_msg=null, $reply=null)
- * send_audio($to, $audio, $id_msg=null, $reply=null)
- * send_document($to, $document, $id_msg=null, $reply=null)
+ * `send_action($to, $action)`
+ * `send_message($to, $msg, $id_msg=null, $reply=null)`
+ * `send_location($to, $lat, $lon, $id_msg=null, $reply=null)`
+ * `send_sticker($to, $sticker, $id_msg=null, $reply=null)`
+ * `send_video($to, $video, $id_msg=null, $reply=null)`
+ * `send_photo($to, $photo, $caption=null, $id_msg=null, $reply=null)`
+ * `send_audio($to, $audio, $id_msg=null, $reply=null)`
+ * `send_document($to, $document, $id_msg=null, $reply=null)`
 
 After the triggers have been configured (it's possible to set up multiple triggers/callbacks: in case of multiple triggers associated to the same message/text, each callback is triggered), the triggering process have to be executed:
 
