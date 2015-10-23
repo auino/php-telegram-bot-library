@@ -98,7 +98,7 @@ in this case, a `text` log (each value is good) containing the `$answer` content
 
 This bot would simply respond `/start`, `/welcome`, and `/hi` messages with a simple `Welcome...` message.
 
-Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API), following methods are supported:
+Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API) and [official Telegram Bot API](https://core.telegram.org/bots/api#sendchataction), following methods are supported:
  * `send_action($to, $action)`
  * `send_message($to, $msg, $id_msg=null, $reply=null)`
  * `send_location($to, $lat, $lon, $id_msg=null, $reply=null)`
