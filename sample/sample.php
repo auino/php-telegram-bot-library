@@ -16,7 +16,7 @@ function trigger_welcome($p) {
 }
 function trigger_help($p) {
     try {
-        $answer = "Try /help recursively...";
+        $answer = "Try /photo to get a photo...";
         $p->bot()->send_message($p->chatid(), $answer);
         return logarray('text', $answer);
     }
