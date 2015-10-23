@@ -41,7 +41,7 @@ class telegram_trigger_set {
 			foreach($ev as $e) {
 				$name = $e->name();
 				$count = $e->count();
-				if((strtolower($cmd) == strtolower($name)) && ((intval($count)<0) || (intval($count)==@count($par)))) {
+				if((strtolower($cmd) == strtolower($name)) && ((intval($count)<0) || (intval($count)==@count($msgpar)))) {
 					echo "Triggering $c...\n";
 					$par = new telegram_function_parameters($telegrambot, $chatid, $msgpar);
 					return call_user_func_array($c, [$par]);
