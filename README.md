@@ -17,7 +17,8 @@ This library allows you to easily set up a PHP based Telegram Bot.
  3. Open the `lib/config.php` file and set up configuration parameters accordingly to your needs
  4. Open the `install.php` file:
    1. Set the `$SSLCERTIFICATEFILE` parameter to point to your local public certificate (put the `@` symbol before the name of the file)
-   2. Configure the `$WEBHOOKURL` parameter to point your (HTTPS) webhook
+   2. Set the `$WEBHOOKURL` parameter to point your (HTTPS) webhook
+   3. Set the `$TOKEN` parameter accordingly to the Telegram token of your bot
  6. Run `install.php` by opening the relative URL on a browser, or directly from command line: `php install.php`
  7. Remove `install.php` and the public SSL certificate inside of the root directory of `php-telegram-bot-library`
 
