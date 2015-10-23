@@ -3,7 +3,8 @@
 // https://github.com/auino/php-telegram-bot-library
 
 $REGISTERWEBHOOK = true;
-$SSLCERTIFICATEFILE = '@certificate.pem';
+$TOKEN = "...";
+$SSLCERTIFICATEFILE = "@certificate.pem";
 $WEBHOOKURL = "https://www.yourwebsite.org/webhook.php";
 
 $SETUPDB = true;
@@ -15,6 +16,7 @@ include_once("lib/telegram.php");
 
 if($REGISTERWEBHOOK) {
 	echo "Registering webhook...\n";
+	$bot = new telegram_bot($token);
 	//$bot->set_webhook();
 	$bot->set_webhook($WEBHOOKURL, $SSLCERTIFICATEFILE);
 	echo "Registered!\n";
