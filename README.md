@@ -12,16 +12,16 @@ This library allows you to easily set up a PHP based Telegram Bot.
  * Simplified Log managemnet ([MySQL](http://www.mysql.com) based)
 
 ### Installation ###
- 0. Clone the repository on your server:
+ 1. Clone the repository on your server:
 
     ```
     git clone https://github.com/auino/php-telegram-bot-library.git
     ```
 
- 1. Generate a self-signed SSL certificate, if needed ([instructions by Telegram](https://core.telegram.org/bots/self-signed) may be useful)
- 2. Place the public `certificate.pem` certificate in the root directory of `php-telegram-bot-library`
- 3. Open the `lib/config.php` file and set up configuration parameters accordingly to your needs
- 4. Open the `install.php` file:
+ 2. Generate a self-signed SSL certificate, if needed ([instructions by Telegram](https://core.telegram.org/bots/self-signed) may be useful)
+ 3. Place the public `certificate.pem` certificate in the root directory of `php-telegram-bot-library`
+ 4. Open the `lib/config.php` file and set up configuration parameters accordingly to your needs
+ 5. Open the `install.php` file:
    1. Set the `$SSLCERTIFICATEFILE` parameter to point to your local public certificate (put the `@` symbol before the name of the file)
    2. Set the `$WEBHOOKURL` parameter to point your (HTTPS) webhook
    3. Set the `$TOKEN` parameter accordingly to the Telegram token of your bot
