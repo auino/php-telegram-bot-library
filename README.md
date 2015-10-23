@@ -27,7 +27,9 @@ Then, the `lib` directory (as configured after installation, see `lib/config.php
 
 Assuming that, the first step is to include the library: this is possible through a single simple command:
 
-`require('lib/telegram.php');`
+```
+require("lib/telegram.php");
+```
 
 Hence, it is needed to instantiate a new bot:
 
