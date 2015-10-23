@@ -58,6 +58,12 @@ $chatid = $message->message->chat->id;
 $text = $message->message->text;
 ```
 
+The next step is to instantiate a new trigger set:
+
+```
+$ts = new telegram_trigger_set($botname);
+```
+
 It's now possible to set up triggers for specific commands:
 
 ```
@@ -158,6 +164,9 @@ function trigger_photo($p) {
 
 // instantiating a new bot
 $bot = new telegram_bot($token);
+
+// instantiating a new triggers set
+$ts = new telegram_trigger_set($botname);
 
 // registering the triggers
 $ts->register_trigger("trigger_welcome", ["/start","/welcome","/hi"], 0);

@@ -6,4 +6,8 @@ function db_log($botname, $action, $chat, $type, $content, $date) {
 	$q = "INSERT INTO Logs(bot, action, chat, type, content, date) VALUES('$botname', '$action', '$chat', '$type', $content, '$date');";
 	db_nonquery($q);
 }
+
+function logarray($type, $content) {
+	return array('type'=>$type, 'content'=>$content);
+}
 ?>

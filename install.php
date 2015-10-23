@@ -18,14 +18,14 @@ include_once("lib/telegram.php");
 
 if($DELETEEXISTENTWBHOOK) {
 	echo "Deleting registered webhook...\n";
-	$bot = new telegram_bot($token);
+	$bot = new telegram_bot($TOKEN);
 	$bot->set_webhook();
 	echo "Deleted!\n";
 }
 else { // you can register a new webhook only if you're not deleting existent webhook
 	if($REGISTERWEBHOOK) {
 		echo "Registering webhook...\n";
-		$bot = new telegram_bot($token);
+		$bot = new telegram_bot($TOKEN);
 		//$bot->set_webhook();
 		$bot->set_webhook($WEBHOOKURL, $SSLCERTIFICATEFILE);
 		echo "Registered!\n";

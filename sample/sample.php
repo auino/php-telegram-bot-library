@@ -3,6 +3,7 @@
 require("../lib/telegram.php");
 
 // basic configuration
+$botname = "myawesomebot";
 $token = "...";
 
 // callbacks definition
@@ -35,6 +36,9 @@ function trigger_photo($p) {
 
 // instantiating a new bot
 $bot = new telegram_bot($token);
+
+// instantiating a new triggers set
+$ts = new telegram_trigger_set($botname);
 
 // registering the triggers
 $ts->register_trigger("trigger_welcome", ["/start","/welcome","/hi"], 0);
