@@ -64,7 +64,7 @@ It's now possible to set up triggers for specific commands:
 $ts->register_trigger("trigger_welcome", ["/start","/welcome","/hi"], 0);
 ```
 
-where `trigger_welcome` is the name of the triggered/callback function and `0` identifies the number of parameters accepted (considering the remaining of the received text, splitted by spaces; `-1` is used to trigger independently on the number of parameters).
+where `trigger_welcome` is the name of the triggered/callback function and `0` identifies the number of parameters accepted (considering the remaining of the received text, splitted by spaces; `-1` is used to trigger the function independently on the number of parameters).
 
 At this point, it is assumed that a `trigger_welcome` function is defined:
 
