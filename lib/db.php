@@ -21,7 +21,7 @@ function db_nonquery($q) {
 	return $res;
 }
 
-// db_connect() and db_close() executions are required outside of this function
+// db_connect() and db_close() executions are accomplished inside of this function
 function db_query($q) {
 	global $DB_NAME;
 	$conn = db_connect();
