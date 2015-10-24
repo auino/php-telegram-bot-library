@@ -142,6 +142,7 @@ require("lib/telegram.php");
 $token = "...";
 
 // callbacks definition
+
 function trigger_welcome($p) {
 	try {
 		$answer = "Welcome...";
@@ -150,6 +151,7 @@ function trigger_welcome($p) {
 	}
 	catch(Exception $e) { return false; } // you can also return what you prefer
 }
+
 function trigger_help($p) {
 	try {
 		$answer = "Try /photo to get a photo...";
@@ -178,7 +180,7 @@ $ts = new telegram_trigger_set($botname);
 // registering the triggers
 $ts->register_trigger("trigger_welcome", ["/start","/welcome","/hi"], 0);
 $ts->register_trigger("trigger_help", ["/help"], 0);
-$ts->register_trigger("trigger_help", ["/getphoto","/photo","/picture"], -1); // parameters count is ignore
+$ts->register_trigger("trigger_photo", ["/getphoto","/photo","/picture"], -1); // parameters count is ignore
 
 // receiving data sent from the user
 $message = $bot->read_post_message();
