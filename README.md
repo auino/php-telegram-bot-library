@@ -125,11 +125,11 @@ db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date
 ```
 
 Following functions are available on the configured database:
- 1. `db_connect()` to connect to the database, returns a `$connection` object
- 2. `db_close($connection)` to interrupt the connection with the database; returns nothing
- 3. `db_query($query)` to run a "non query" (i.e. operations such as `UPDATE`, `INSERT`, etc.) on the database (connection and closure are automatically executed); returns an array of records
- 4. `db_query($query)` to run a query (i.e. `SELECT`) on the database (connection and closure are automatically executed); returns an array of records
- 5. `db_randomone($table, $filter=null)`: this function is useful on non performant devices (i.e. a single-core Raspberry PI) to get a single random element from a `$table` without using the SQL `RAND()` function, loading results in memory; `$filter` may be, e.g., equal to `Orders.total > 1000`; returns the pointer to the results of the query; in this case `db_connect()` and `db_close(_)` operations are not executed inside of the function
+ * `db_connect()` to connect to the database, returns a `$connection` object
+ * `db_close($connection)` to interrupt the connection with the database; returns nothing
+ * `db_query($query)` to run a "non query" (i.e. operations such as `UPDATE`, `INSERT`, etc.) on the database (connection and closure are automatically executed); returns an array of records
+ * `db_query($query)` to run a query (i.e. `SELECT`) on the database (connection and closure are automatically executed); returns an array of records
+ * `db_randomone($table, $filter=null)`: this function is useful on non performant devices (i.e. a single-core Raspberry PI) to get a single random element from a `$table` without using the SQL `RAND()` function, loading results in memory; `$filter` may be, e.g., equal to `Orders.total > 1000`; returns the pointer to the results of the query; in this case `db_connect()` and `db_close(_)` operations are not executed inside of the function
 
 ### Sample Bot ###
 Here is the PHP code of a sample bot (check the `sample/sample.php` file and configure the `$token` variable before running it).
