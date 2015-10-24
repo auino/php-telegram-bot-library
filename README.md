@@ -200,3 +200,7 @@ if(!$response) { // an error occurred
 db_log($botname, 'recv', $chatid, 'text', $text, $date);
 db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
 ```
+
+### Contacts ###
+
+You can find me on Twitter as [@auino](https://twitter.com/auino).
