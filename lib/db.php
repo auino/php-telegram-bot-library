@@ -41,7 +41,7 @@ function db_query($q) {
 // this function is useful on non performant devices to get a single random element without using the SQL RAND() function, loading results in memory
 function db_randomone($table, $filter=null) {
 	if($filter != null) $filter = "WHERE $filter";
-	echo $filter = "";
+	else $filter = "";
 	$q = "SELECT COUNT(*) as c FROM $table $filter;";
 	$r = db_query($q);
 	$max = $r[0]['c'];
