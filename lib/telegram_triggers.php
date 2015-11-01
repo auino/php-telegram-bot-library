@@ -50,12 +50,17 @@ class telegram_trigger_set {
 				$count = $e->count();
 				if((strtolower($cmd) == strtolower($name)) && ((intval($count)<0) || (intval($count)==@count($msgpar)))) {
 					echo "Triggering $c...\n";
-					$res = $res || (call_user_func_array($c, [$par]));
+					$tmpres = call_user_func_array($c, [$par]);
+					if($tmpres) {
+						if(!$res) $res = array();
+						array_push($res, $tmpres);
+					}
 					if($this->onlyoneresponse) return $res;
 				}
 			}
 		}
-		if($this->trigger_error != null) return call_user_func_array($this->trigger_error, [$par]);
+		if($res) return $res;
+		if($this->trigger_error != null) return array(call_user_func_array($this->trigger_error, [$par]));
 		return $res;
 	}
 }

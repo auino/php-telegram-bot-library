@@ -67,10 +67,17 @@ $ts = new telegram_trigger_set($botname);
 It's now possible to set up triggers for specific commands:
 
 ```
-$ts->register_trigger("trigger_welcome", ["/start","/welcome","/hi"], 0);
+$ts->register_trigger_command("trigger_welcome", ["/start","/welcome","/hi"], 0);
 ```
 
 where `trigger_welcome` is the name of the triggered/callback function and `0` identifies the number of parameters accepted (considering the remaining of the received text, splitted by spaces; `-1` is used to trigger the function independently on the number of parameters).
+
+Similarly, it's possible to register a trigger to use if anything goes wrong:
+```
+$ts->register_trigger_error("trigger_error");
+```
+
+where `trigger_welcome` is the name of the triggered/callback function.
 
 At this point, it is assumed that a `trigger_welcome` function is defined:
 
@@ -210,8 +217,12 @@ $text = $message->message->text;
 $response = $ts->run($bot, $chatid, $text);
 // log messages exchange on the database
 db_log($botname, 'recv', $chatid, 'text', $text, $date);
-if($response) db_log($botname, 'error', $chatid, 'Error', $date);
-else db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
+if($response) {
+	for($response as $r) db_log($botname, 'sent', $chatid, $r['type'], $r['content'], $date);
+}
+else {
+	db_log($botname, 'error', $chatid, 'Error', $date);
+}
 ```
 
 ### Contacts ###

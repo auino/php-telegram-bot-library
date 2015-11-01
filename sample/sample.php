@@ -74,6 +74,10 @@ $text = $message->message->text;
 $response = $ts->run($bot, $chatid, $text);
 // log messages exchange on the database
 db_log($botname, 'recv', $chatid, 'text', $text, $date);
-if($response) db_log($botname, 'error', $chatid, 'Error', $date);
-else db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
+if($response) {
+	for($response as $r) db_log($botname, 'sent', $chatid, $r['type'], $r['content'], $date);
+}
+else {
+	db_log($botname, 'error', $chatid, 'Error', $date);
+}
 ?>
