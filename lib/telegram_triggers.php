@@ -23,13 +23,13 @@ class telegram_trigger {
 }
 
 class telegram_trigger_set {
-	private $onlyoneresponse = true;
+	private $singletrigger = true;
 	private $botname = null;
 	private $trigger_any = null;
 	private $triggers_command = array();
 	private $triggers_intext = array();
 	private $trigger_error = null;
-	function __construct($b) { $this->botname = $b; }
+	function __construct($b, $st) { $this->botname = $b; $this->singletrigger = $st; }
 	public function register_trigger_any($callback) {
 		$this->trigger_any = $callback;
 	}
@@ -60,7 +60,7 @@ class telegram_trigger_set {
 			echo "Triggering $c...\n";
 			$tmpres = call_user_func_array($c, [$fullpar]);
 			if($tmpres) array_push($res, $tmpres);
-			if($this->onlyoneresponse) return $res;
+			if($this->singletrigger) return $res;
 		}
 		$par = new telegram_function_parameters($telegrambot, $chatid, $msgpar);
 		// checking command strings
@@ -74,7 +74,7 @@ class telegram_trigger_set {
 					echo "Triggering $c...\n";
 					$tmpres = call_user_func_array($c, [$par]);
 					if($tmpres) array_push($res, $tmpres);
-					if($this->onlyoneresponse) return $res;
+					if($this->singletrigger) return $res;
 				}
 			}
 		}
@@ -88,7 +88,7 @@ class telegram_trigger_set {
 					echo "Triggering $c...\n";
 					$tmpres = call_user_func_array($c, [$fullpar]);
 					if($tmpres) array_push($res, $tmpres);
-					if($this->onlyoneresponse) return $res;
+					if($this->singletrigger) return $res;
 				}
 			}
 		}

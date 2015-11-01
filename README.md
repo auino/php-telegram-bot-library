@@ -61,8 +61,12 @@ $text = $message->message->text;
 The next step is to instantiate a new trigger set:
 
 ```
-$ts = new telegram_trigger_set($botname);
+$ts = new telegram_trigger_set($botname, $singletrigger);
 ```
+
+where `$singletrigger` (equal to `true` or `false`) identifies the support to multiple triggers.
+Specifically, if `$singletrigger=true`, at most, a single trigger will be called.
+Otherwise, multiple triggers may be called (e.g. it can be useful to support multiple answers for a single received message).
 
 #### Triggers ####
 
@@ -126,7 +130,9 @@ $ts->register_trigger_error("trigger_error");
 
 where `trigger_error` is the name of the triggered/callback function.
 
-### Supported Telegram Actions ###
+If `$singletrigger=true` (see description above), accordingly to registration function names, the order of triggering is the following one: trigger_any, trigger_command, trigger_intext, trigger_error.
+
+#### Supported Telegram Actions ####
 
 Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API) and [official Telegram Bot API](https://core.telegram.org/bots/api#sendchataction), following methods are supported:
  * `send_action($to, $action)`
@@ -138,14 +144,18 @@ Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-AP
  * `send_audio($to, $audio, $id_msg=null, $reply=null)`
  * `send_document($to, $document, $id_msg=null, $reply=null)`
 
+#### Automated Triggering ####
+
 After the triggers have been configured (it's possible to set up multiple triggers/callbacks: in case of multiple triggers associated to the same message/text, each callback is triggered), the triggering process have to be executed:
 
 ```
 $response = $ts->run($bot, $chatid, $text);
 ```
 
-where `$response` returns the result of the callback (which should be the result of a `logarray()` call).
-If `$response` is `false`, something goes wrong.
+where `$response` returns an array of resulting values for the executed callbacks (which should be the result of a `logarray()` call).
+If `$response` is an empty array, nothing has been triggered.
+
+#### Logging ####
 
 At the end, it's possible to log receive and send events:
 
@@ -153,6 +163,8 @@ At the end, it's possible to log receive and send events:
 db_log($botname, 'recv', $chatid, 'text', $text, $date);
 db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
 ```
+
+#### Database Utilities ####
 
 Following functions are available on the configured database:
  * `db_connect()` to connect to the database, returns a `$connection` object
