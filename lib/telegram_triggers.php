@@ -25,10 +25,14 @@ class telegram_trigger {
 class telegram_trigger_set {
 	private $onlyoneresponse = true;
 	private $botname = null;
+	private $trigger_any = null;
 	private $triggers_command = array();
 	private $triggers_intext = array();
 	private $trigger_error = null;
 	function __construct($b) { $this->botname = $b; }
+	public function register_trigger_any($callback) {
+		$this->trigger_any = $callback;
+	}
 	public function register_trigger_command($callback, $names, $count) {
 		$evs = array();
 		foreach($names as $name) array_push($evs, new telegram_event($name, $count));
@@ -48,8 +52,17 @@ class telegram_trigger_set {
 		$msg = str_ireplace("@".$this->botname, "", $msg);
 		$msgpar = explode(" ", $msg);
 		$cmd = array_shift($msgpar);
-		$par = new telegram_function_parameters($telegrambot, $chatid, $msgpar);
+		$fullpar = new telegram_function_parameters($telegrambot, $chatid, $msg);
 		$res = array();
+		// triggering general trigger (one for all)
+		if($this->trigger_any != null) {
+			$c = $this->trigger_any;
+			echo "Triggering $c...\n";
+			$tmpres = call_user_func_array($c, [$fullpar]);
+			if($tmpres) array_push($res, $tmpres);
+			if($this->onlyoneresponse) return $res;
+		}
+		$par = new telegram_function_parameters($telegrambot, $chatid, $msgpar);
 		// checking command strings
 		foreach($this->triggers_command as $t) {
 			$ev = $t->events();
@@ -73,7 +86,6 @@ class telegram_trigger_set {
 				$name = $e->name();
 				if(strtolower($name) in strtolower($msg) {
 					echo "Triggering $c...\n";
-					$fullpar = new telegram_function_parameters($telegrambot, $chatid, $msg);
 					$tmpres = call_user_func_array($c, [$fullpar]);
 					if($tmpres) array_push($res, $tmpres);
 					if($this->onlyoneresponse) return $res;

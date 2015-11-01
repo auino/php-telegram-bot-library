@@ -64,6 +64,8 @@ The next step is to instantiate a new trigger set:
 $ts = new telegram_trigger_set($botname);
 ```
 
+#### Triggers ####
+
 It's now possible to set up triggers for specific commands:
 
 ```
@@ -82,7 +84,15 @@ where `trigger_hello` identifies the triggered/callback function and `["hello"]`
 For instance, in this case, if the message `Hello World!` is received, the `trigger_hello` function is called.
 Note that in this case the [privacy mode](https://core.telegram.org/bots#privacy-mode) of your Telegram bot should be configured accordingly to your needs.
 
-Also, it's possible to register a trigger to use if anything goes wrong:
+Also, it's possible to register a single generic trigger to use for each received command:
+
+```
+$ts->register_trigger_any("one_trigger_for_all");
+```
+
+where `one_trigger_for_all` is the name of the triggered/callback function.
+
+Finally, it's possible to register a trigger to use if anything goes wrong:
 
 ```
 $ts->register_trigger_error("trigger_error");
@@ -115,6 +125,8 @@ The `logarray()` function returns an associative array with `type` and `content`
 in this case, a `text` log (each value is good) containing the `$answer` content is returned.
 
 This bot would simply respond `/start`, `/welcome`, and `/hi` messages with a simple `Welcome...` message.
+
+### Supported Telegram Actions ###
 
 Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API) and [official Telegram Bot API](https://core.telegram.org/bots/api#sendchataction), following methods are supported:
  * `send_action($to, $action)`
