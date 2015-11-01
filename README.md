@@ -74,32 +74,6 @@ $ts->register_trigger_command("trigger_welcome", ["/start","/welcome","/hi"], 0)
 
 where `trigger_welcome` is the name of the triggered/callback function and `0` identifies the number of parameters accepted (considering the remaining of the received text, splitted by spaces; `-1` is used to trigger the function independently on the number of parameters).
 
-Similarly, it's possible to register a trigger to use when a message includes specific text (case insensitive check):
-
-```
-$ts->register_trigger_intext("trigger_hello", ["hello"]);
-```
-
-where `trigger_hello` identifies the triggered/callback function and `["hello"]` identifies the texts triggering that function.
-For instance, in this case, if the message `Hello World!` is received, the `trigger_hello` function is called.
-Note that in this case the [privacy mode](https://core.telegram.org/bots#privacy-mode) of your Telegram bot should be configured accordingly to your needs.
-
-Also, it's possible to register a single generic trigger to use for each received command:
-
-```
-$ts->register_trigger_any("one_trigger_for_all");
-```
-
-where `one_trigger_for_all` is the name of the triggered/callback function.
-
-Finally, it's possible to register a trigger to use if anything goes wrong:
-
-```
-$ts->register_trigger_error("trigger_error");
-```
-
-where `trigger_welcome` is the name of the triggered/callback function.
-
 At this point, it is assumed that a `trigger_welcome` function is defined:
 
 ```
@@ -125,6 +99,32 @@ The `logarray()` function returns an associative array with `type` and `content`
 in this case, a `text` log (each value is good) containing the `$answer` content is returned.
 
 This bot would simply respond `/start`, `/welcome`, and `/hi` messages with a simple `Welcome...` message.
+
+Similarly, it's possible to register a trigger to use when a message includes specific text (case insensitive check):
+
+```
+$ts->register_trigger_intext("trigger_hello", ["hello"]);
+```
+
+where `trigger_hello` identifies the triggered/callback function and `["hello"]` identifies the texts triggering that function.
+For instance, in this case, if the message `Hello World!` is received, the `trigger_hello` function is called.
+Note that in this case the [privacy mode](https://core.telegram.org/bots#privacy-mode) of your Telegram bot should be configured accordingly to your needs.
+
+Also, it's possible to register a single generic trigger to use for each received command:
+
+```
+$ts->register_trigger_any("one_trigger_for_all");
+```
+
+where `one_trigger_for_all` is the name of the triggered/callback function.
+
+Finally, it's possible to register a trigger to use if anything goes wrong:
+
+```
+$ts->register_trigger_error("trigger_error");
+```
+
+where `trigger_error` is the name of the triggered/callback function.
 
 ### Supported Telegram Actions ###
 
