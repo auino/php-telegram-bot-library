@@ -71,13 +71,9 @@ $chatid = $message->message->chat->id;
 $text = $message->message->text;
 
 // running triggers management
-$response = $ts->run($bot, $chatid, $text);
+$response = $ts->run($bot, $chatid, $text); // returns an array of triggered events
 // log messages exchange on the database
 db_log($botname, 'recv', $chatid, 'text', $text, $date);
-if($response) {
-	for($response as $r) db_log($botname, 'sent', $chatid, $r['type'], $r['content'], $date);
-}
-else {
-	db_log($botname, 'error', $chatid, 'Error', $date);
-}
+if(count($response)>0) for($response as $r) db_log($botname, 'sent', $chatid, $r['type'], $r['content'], $date);
+else db_log($botname, 'error', $chatid, 'Error', $date);
 ?>

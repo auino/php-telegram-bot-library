@@ -72,7 +72,18 @@ $ts->register_trigger_command("trigger_welcome", ["/start","/welcome","/hi"], 0)
 
 where `trigger_welcome` is the name of the triggered/callback function and `0` identifies the number of parameters accepted (considering the remaining of the received text, splitted by spaces; `-1` is used to trigger the function independently on the number of parameters).
 
-Similarly, it's possible to register a trigger to use if anything goes wrong:
+Similarly, it's possible to register a trigger to use when a message includes specific text (case insensitive check):
+
+```
+$ts->register_trigger_intext("trigger_hello", ["hello"]);
+```
+
+where `trigger_hello` identifies the triggered/callback function and `["hello"]` identifies the texts triggering that function.
+For instance, in this case, if the message `Hello World!` is received, the `trigger_hello` function is called.
+Note that in this case the [privacy mode](https://core.telegram.org/bots#privacy-mode) of your Telegram bot should be configured accordingly to your needs.
+
+Also, it's possible to register a trigger to use if anything goes wrong:
+
 ```
 $ts->register_trigger_error("trigger_error");
 ```
@@ -214,15 +225,11 @@ $chatid = $message->message->chat->id;
 $text = $message->message->text;
 
 // running triggers management
-$response = $ts->run($bot, $chatid, $text);
+$response = $ts->run($bot, $chatid, $text); // returns an array of triggered events
 // log messages exchange on the database
 db_log($botname, 'recv', $chatid, 'text', $text, $date);
-if($response) {
-	for($response as $r) db_log($botname, 'sent', $chatid, $r['type'], $r['content'], $date);
-}
-else {
-	db_log($botname, 'error', $chatid, 'Error', $date);
-}
+if(count($response)>0) for($response as $r) db_log($botname, 'sent', $chatid, $r['type'], $r['content'], $date);
+else db_log($botname, 'error', $chatid, 'Error', $date);
 ```
 
 ### Contacts ###
