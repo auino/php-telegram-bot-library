@@ -139,6 +139,7 @@ Here is the PHP code of a sample bot (check the `sample/sample.php` file and con
 require("lib/telegram.php");
 
 // basic configuration
+$botname = "myawesomebot";
 $token = "...";
 
 // callbacks definition
@@ -171,6 +172,21 @@ function trigger_photo($p) {
 	catch(Exception $e) { return false; }
 }
 
+// callback to use if anything goes wrong
+function trigger_error($p) {
+	if($p->chatid() < 0) { // if message has been sent from a member of a Telegram group
+		// ignore it and do not reply (to avoid not necessary messages on the group)
+		$response = logarray('ignore', null);
+	}
+	else {
+		// reply with an error message
+		$answer = "Error...";
+		$bot->send_message($p->chatid(), $answer);
+		$response = logarray('error', $answer);
+	}
+	return $response;
+}
+
 // instantiating a new bot
 $bot = new telegram_bot($token);
 
@@ -178,9 +194,11 @@ $bot = new telegram_bot($token);
 $ts = new telegram_trigger_set($botname);
 
 // registering the triggers
-$ts->register_trigger("trigger_welcome", ["/start","/welcome","/hi"], 0);
-$ts->register_trigger("trigger_help", ["/help"], 0);
-$ts->register_trigger("trigger_photo", ["/getphoto","/photo","/picture"], -1); // parameters count is ignore
+$ts->register_trigger_command("trigger_welcome", ["/start","/welcome","/hi"], 0);
+$ts->register_trigger_command("trigger_help", ["/help"], 0);
+$ts->register_trigger_command("trigger_photo", ["/getphoto","/photo","/picture"], -1); // parameters count is ignore
+// error trigger
+$ts->register_trigger_error("trigger_error");
 
 // receiving data sent from the user
 $message = $bot->read_post_message();
@@ -190,24 +208,10 @@ $text = $message->message->text;
 
 // running triggers management
 $response = $ts->run($bot, $chatid, $text);
-
-// checking triggering results
-if(!$response) { // an error occurred
-	if($chatid < 0) { // if message has been sent from a member of a Telegram group
-		// ignore it and do not reply (to avoid not necessary messages on the group)
-		$response = logarray('ignore', null);
-	}
-	else {
-		// reply with an error message
-		$answer = "Error...";
-		$bot->send_message($chatid, $answer);
-		$response = logarray('error', $answer);
-	}
-}
-
 // log messages exchange on the database
 db_log($botname, 'recv', $chatid, 'text', $text, $date);
-db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
+if($response) db_log($botname, 'error', $chatid, 'Error', $date);
+else db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
 ```
 
 ### Contacts ###

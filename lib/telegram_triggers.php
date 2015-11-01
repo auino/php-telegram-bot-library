@@ -22,20 +22,27 @@ class telegram_trigger {
 }
 
 class telegram_trigger_set {
-	private $triggers;
-	private $botname;
-	function __construct($b) { $this->triggers = array(); $this->botname = $b; }
-	public function register_trigger($callback, $names, $count) {
+	private $onlyoneresponse = true;
+	private $botname = null;
+	private $triggers_command = null;
+	private $trigger_error = null;
+	function __construct($b) { $this->triggers_command = array(); $this->botname = $b; }
+	public function register_trigger_command($callback, $names, $count) {
 		$evs = array();
 		foreach($names as $name) array_push($evs, new telegram_event($name, $count));
 		$t = new telegram_trigger($callback, $evs);
-		array_push($this->triggers, $t);
+		array_push($this->triggers_command, $t);
+	}
+	public function register_trigger_error($callback) {
+		$this->trigger_error = $callback;
 	}
 	public function run($telegrambot, $chatid, $msg) { // text only messages (at least for now)
 		$msg = str_ireplace("@".$this->botname, "", $msg);
 		$msgpar = explode(" ", $msg);
 		$cmd = array_shift($msgpar);
-		foreach($this->triggers as $t) {
+		$par = new telegram_function_parameters($telegrambot, $chatid, $msgpar);
+		$res = false;
+		foreach($this->triggers_command as $t) {
 			$ev = $t->events();
 			$c = $t->callback();
 			foreach($ev as $e) {
@@ -43,12 +50,13 @@ class telegram_trigger_set {
 				$count = $e->count();
 				if((strtolower($cmd) == strtolower($name)) && ((intval($count)<0) || (intval($count)==@count($msgpar)))) {
 					echo "Triggering $c...\n";
-					$par = new telegram_function_parameters($telegrambot, $chatid, $msgpar);
-					return call_user_func_array($c, [$par]);
+					$res = $res || (call_user_func_array($c, [$par]));
+					if($this->onlyoneresponse) return $res;
 				}
 			}
 		}
-		return false;
+		if($this->trigger_error != null) return call_user_func_array($this->trigger_error, [$par]);
+		return $res;
 	}
 }
 ?>
