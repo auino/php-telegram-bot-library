@@ -40,7 +40,7 @@ class telegram_trigger_set {
 	}
 	public function register_trigger_intext($callback, $texts) {
 		$evs = array();
-		foreach($texts as $text) array_push($evs, new telegram_event($text));
+		foreach($texts as $text) array_push($evs, new telegram_event($text, -1));
 		$t = new telegram_trigger($callback, $evs);
 		array_push($this->triggers_intext, $t);
 	}
