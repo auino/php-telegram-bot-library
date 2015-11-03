@@ -29,9 +29,7 @@ function db_query($q) {
 	$retval = mysql_query($q, $conn);
 	if(!$retval) return false;
 	$res = array();
-	while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
-		array_push($res, $row);
-	}
+	while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) array_push($res, $row);
 	db_close($conn);
 	return $res;
 }
