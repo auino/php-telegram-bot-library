@@ -125,10 +125,10 @@ where `one_trigger_for_all` is the name of the triggered/callback function.
 Finally, it's possible to register a trigger to use if anything goes wrong:
 
 ```
-$ts->register_trigger_error("trigger_error");
+$ts->register_trigger_error("trigger_err");
 ```
 
-where `trigger_error` is the name of the triggered/callback function.
+where `trigger_err` is the name of the triggered/callback function.
 
 If `$singletrigger=true` (see description above), accordingly to registration function names, the order of triggering is the following one: trigger_any, trigger_command, trigger_intext, trigger_error.
 
@@ -215,7 +215,7 @@ function trigger_photo($p) {
 }
 
 // callback to use if anything goes wrong
-function trigger_error($p) {
+function trigger_err($p) {
 	if($p->chatid() < 0) { // if message has been sent from a member of a Telegram group
 		// ignore it and do not reply (to avoid not necessary messages on the group)
 		$response = logarray('ignore', null);
@@ -240,7 +240,7 @@ $ts->register_trigger_command("trigger_welcome", ["/start","/welcome","/hi"], 0)
 $ts->register_trigger_command("trigger_help", ["/help"], 0);
 $ts->register_trigger_command("trigger_photo", ["/getphoto","/photo","/picture"], -1); // parameters count is ignore
 // error trigger
-$ts->register_trigger_error("trigger_error");
+$ts->register_trigger_error("trigger_err");
 
 // receiving data sent from the user
 $message = $bot->read_post_message();
