@@ -28,7 +28,7 @@ class telegram_trigger_set {
 	private $triggers_command = array();
 	private $triggers_intext = array();
 	private $trigger_error = null;
-	function __construct($b, $st) { $this->botname = $b; $this->singletrigger = $st; }
+	function __construct($b, $st=true) { $this->botname = $b; $this->singletrigger = $st; }
 	public function register_trigger_any($callback) {
 		$this->trigger_any = $callback;
 	}

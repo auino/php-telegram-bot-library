@@ -183,6 +183,7 @@ require("lib/telegram.php");
 // basic configuration
 $botname = "myawesomebot";
 $token = "...";
+$singletrigger = true; // if true, it tells the library to trigger at most a single callback function for each received message
 
 // callbacks definition
 
@@ -233,7 +234,7 @@ function trigger_err($p) {
 $bot = new telegram_bot($token);
 
 // instantiating a new triggers set
-$ts = new telegram_trigger_set($botname);
+$ts = new telegram_trigger_set($botname, $singletrigger);
 
 // registering the triggers
 $ts->register_trigger_command("trigger_welcome", ["/start","/welcome","/hi"], 0);
