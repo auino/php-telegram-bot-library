@@ -9,8 +9,7 @@ class telegram_function_parameters {
 
 class telegram_event {
 	private $name, $count;
-	function __construct($n) { $this->name = $n; $this->count = -1; }
-	function __construct($n, $c) { $this->name = $n; $this->count = $c; }
+	function __construct($n, $c=-1) { $this->name = $n; $this->count = $c; }
 	function name() { return $this->name; }
 	function count() { return $this->count; }
 }
@@ -84,7 +83,7 @@ class telegram_trigger_set {
 			$c = $t->callback();
 			foreach($ev as $e) {
 				$name = $e->name();
-				if(strtolower($name) in strtolower($msg) {
+				if(strpos(strtolower($msg), strtolower($name)) !== false) {
 					echo "Triggering $c...\n";
 					$tmpres = call_user_func_array($c, [$fullpar]);
 					if($tmpres) array_push($res, $tmpres);
