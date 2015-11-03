@@ -16,9 +16,8 @@ function db_nonquery($q) {
 	if(!$conn) return false;
 	mysql_select_db($DB_NAME);
 	$retval = mysql_query($q, $conn);
-	$res = $retval;
 	db_close($conn);
-	return $res;
+	return $retval;
 }
 
 // db_connect() and db_close() executions are accomplished inside of this function
