@@ -34,14 +34,13 @@ function db_query($q) {
 	return $res;
 }
 
-// db_connect() and db_close() executions are required outside of this function
 // this function is useful on non performant devices to get a single random element without using the SQL RAND() function, loading results in memory
 function db_randomone($table, $filter=null) {
 	if($filter != null) $filter = "WHERE $filter";
 	else $filter = "";
 	$q = "SELECT COUNT(*) as c FROM $table $filter;";
 	$r = db_query($q);
-	$max = $r[0]['c'];
+	$max = ($r[0]['c'])-1;
 	$rand = rand(0, $max);
 	$q = "SELECT * FROM $table $filter LIMIT $rand,1;";
 	$r = db_query($q);

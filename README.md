@@ -171,7 +171,7 @@ Following functions are available on the configured database:
  * `db_close($connection)` to interrupt the connection with the database; returns nothing
  * `db_nonquery($query)` to run a "non query" (i.e. operations such as `UPDATE`, `INSERT`, etc.) on the database (connection and closure are automatically executed); returns a boolean value for success/failure
  * `db_query($query)` to run a query (i.e. `SELECT`) on the database (connection and closure are automatically executed); returns an array of records
- * `db_randomone($table, $filter=null)`: this function is useful on non performant devices (i.e. a single-core Raspberry PI) to get a single random element from a `$table` without using the SQL `RAND()` function, loading results in memory; `$filter` may be, e.g., equal to `Orders.total > 1000`; returns the pointer to the results of the query; in this case `db_connect()` and `db_close(_)` operations are not executed inside of the function
+ * `db_randomone($table, $filter=null)`: this function is useful on non performant devices (i.e. a single-core Raspberry PI) to get a single random element from a `$table` without using the SQL `RAND()` function, loading results in memory; `$filter` may be, e.g., equal to `Orders.total > 1000`; returns the pointer to the results of the query
 
 ### Sample Bot ###
 Here is the PHP code of a sample bot (check the `sample/sample.php` file and configure the `$token` variable before running it).
