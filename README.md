@@ -224,7 +224,7 @@ function trigger_err($p) {
 	else {
 		// reply with an error message
 		$answer = "Error...";
-		$bot->send_message($p->chatid(), $answer);
+		$p->bot()->send_message($p->chatid(), $answer);
 		$response = logarray('error', $answer);
 	}
 	return $response;
