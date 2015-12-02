@@ -12,21 +12,22 @@ This library allows you to easily set up a PHP based Telegram Bot.
  * Simplified Log managemnet ([MySQL](http://www.mysql.com) based)
 
 ### Installation ###
- 1. Clone the repository on your server:
+ 1. Create a new Telegram bot by contacting [@BotFather](http://telegram.me/botfather) and following [official Telegram instructions](https://core.telegram.org/bots#botfather)
+ 2. Clone the repository on your server:
 
     ```
     git clone https://github.com/auino/php-telegram-bot-library.git
     ```
 
- 2. Generate a self-signed SSL certificate, if needed ([instructions by Telegram](https://core.telegram.org/bots/self-signed) may be useful)
- 3. Place the public `certificate.pem` certificate in the root directory of `php-telegram-bot-library`
- 4. Open the `lib/config.php` file and set up configuration parameters accordingly to your needs
- 5. Open the `install.php` file:
+ 3. Generate a self-signed SSL certificate, if needed ([instructions by Telegram](https://core.telegram.org/bots/self-signed) may be useful)
+ 4. Place the public `certificate.pem` certificate in the root directory of `php-telegram-bot-library`
+ 5. Open the `lib/config.php` file and set up configuration parameters accordingly to your needs
+ 6. Open the `install.php` file:
    1. Set the `$SSLCERTIFICATEFILE` parameter to point to your local public certificate (put the `@` symbol before the name of the file)
    2. Set the `$WEBHOOKURL` parameter to point your (HTTPS) webhook
    3. Set the `$TOKEN` parameter accordingly to the Telegram token of your bot
- 6. Run `install.php` by opening the relative URL on a browser, or directly from command line: `php install.php`
- 7. Optionally, you can now remove `install.php` and the public SSL certificate inside of the root directory of `php-telegram-bot-library`
+ 7. Run `install.php` by opening the relative URL on a browser, or directly from command line: `php install.php`
+ 8. Optionally, you can now remove `install.php` and the public SSL certificate inside of the root directory of `php-telegram-bot-library`
 
 If you need to delete the registed webhook, you can set `$DELETEEXISTENTWBHOOK = true` inside of the `install.php` file and run it.
 
