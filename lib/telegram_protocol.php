@@ -176,7 +176,7 @@ class telegram_bot {
 		$this->send_action($to, "upload_document");
 		$data = array();
 		$data["chat_id"]=$to;
-		if(file_exists($audio))$document="@".$audio;
+		if(file_exists($document))$document="@".$document;
 		$data["document"]=$document;
 		if(isset($id_msg)){
 			$data["reply_to_message_id"]=$id_msg;
