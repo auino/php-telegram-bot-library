@@ -49,10 +49,8 @@ class telegram_bot {
 	private function open_url($url, $method="GET", $data=null){
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
-		if($method==="POST"){
-			if(isset($data)){
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-			}
+		if($method==="POST") {
+			if(isset($data)) curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		}
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		return curl_exec($ch);
@@ -103,10 +101,8 @@ class telegram_bot {
 		$data["chat_id"]=$to;
 		$data["latitude"]=$lat;
 		$data["longitude"]=$lon;
-		if(isset($id_msg))
-			$data["reply_to_message_id"]=$id_msg;
-		if(isset($reply))
-			$data["reply_markup"]=$reply;
+		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
+		if(isset($reply)) $data["reply_markup"]=$reply;
 		$response = $this->control_api("/sendLocation", $data);
 		return $response;
 	}
@@ -120,10 +116,8 @@ class telegram_bot {
 			else $sticker="@".$sticker;
 		}
 		$data["sticker"]=$sticker;
-		if(isset($id_msg))
-			$data["reply_to_message_id"]=$id_msg;
-		if(isset($reply))
-			$data["reply_markup"]=$reply;
+		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
+		if(isset($reply)) $data["reply_markup"]=$reply;
 		$response = $this->control_api("/sendSticker", $data);
 		return $response;
 	}
@@ -138,10 +132,8 @@ class telegram_bot {
 			else $video="@".$video;
 		}
 		$data["video"]=$video;
-		if(isset($id_msg))
-			$data["reply_to_message_id"]=$id_msg;
-		if(isset($reply))
-			$data["reply_markup"]=$reply;
+		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
+		if(isset($reply)) $data["reply_markup"]=$reply;
 		$response = $this->control_api("/sendVideo", $data);
 		return $response;
 	}
@@ -156,14 +148,9 @@ class telegram_bot {
 			else $photo="@".$photo;
 		}
 		$data["photo"]=$photo;
-		if(isset($caption)){
-			$data["caption"]=$caption;
-		}
-		if(isset($id_msg)){
-			$data["reply_to_message_id"]=$id_msg;
-		}
-		if(isset($reply))
-			$data["reply_markup"]=$reply;
+		if(isset($caption)) $data["caption"]=$caption;
+		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
+		if(isset($reply)) $data["reply_markup"]=$reply;
 		$response = $this->control_api("/sendPhoto", $data);
 		return $response;
 	}
@@ -178,11 +165,8 @@ class telegram_bot {
 			else $audio="@".$audio;
 		}
 		$data["audio"]=$audio;
-		if(isset($id_msg)){
-			$data["reply_to_message_id"]=$id_msg;
-		}
-		if(isset($reply))
-			$data["reply_markup"]=$reply;
+		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
+		if(isset($reply)) $data["reply_markup"]=$reply;
 		$response = $this->control_api("/sendAudio", $data);
 		return $response;
 	}
@@ -197,11 +181,8 @@ class telegram_bot {
 			else $document="@".$document;
 		}
 		$data["document"]=$document;
-		if(isset($id_msg)){
-			$data["reply_to_message_id"]=$id_msg;
-		}
-		if(isset($reply))
-			$data["reply_markup"]=$reply;
+		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
+		if(isset($reply)) $data["reply_markup"]=$reply;
 		$response = $this->control_api("/sendDocument", $data);
 		return $response;
 	}
@@ -232,12 +213,8 @@ class telegram_bot {
 	public function get_user_profile_photos($id_user, $offset=null, $limit=null){
 		$data = array();
 		$data["user_id"]=$id_user;
-		if(isset($offset)){
-			$data["offset"]=$offset;
-		}
-		if(isset($limit)){
-			$data["limit"]=$limit;
-		}
+		if(isset($offset)) $data["offset"]=$offset;
+		if(isset($limit)) $data["limit"]=$limit;
 		$response = $this->control_api("/getUserProfilePhotos", $data);
 		return $response;
 	}
