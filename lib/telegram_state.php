@@ -15,13 +15,13 @@ class telegram_state {
 		if(!$STATES_ENABLED) return;
 		if($this->chat == null) return;
 		$q = "UPDATE States set state='$state' WHERE bot='".$this->botname."' AND chat='".$this->chat."';";
-		if($this->getstate()==null) $q = "INSERT INTO States(bot, chat, state) VALUES('".$this->botname."', '".$this->chat."', '$state');";
+		if($this->getstate() == null) $q = "INSERT INTO States(bot, chat, state) VALUES('".$this->botname."', '".$this->chat."', '$state');";
 		db_nonquery($q);
 	}
 	private function getstate() {
 		global $STATES_ENABLED;
 		if(!$STATES_ENABLED) return null;
-		if($this->chat == null) return;
+		if($this->chat == null) return; // exception here
 		$q = "SELECT state FROM States WHERE bot='".$this->botname."' AND chat='".$this->chat."';";
 		$s = db_query($q);
 		if(count($s)<=0) return null;
