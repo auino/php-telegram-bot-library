@@ -29,11 +29,11 @@ if($DELETEEXISTENTWBHOOK) {
 else { // you can register a new webhook only if you're not deleting existent webhook
 	if($REGISTERWEBHOOK) {
 		echo "Registering webhook...\n";
-		if(class_exists('CurlFile', false)) $SSLCERTIFICATEFILE = new CURLFile(realpath($SSLCERTIFICATEFILE));
+		if(class_exists('CurlFile', false)) $SSLCERTIFICATEFILE = new CURLFile(realpath($SSLCERTIFICATEFILENAME));
 		else $SSLCERTIFICATEFILE = "@$SSLCERTIFICATEFILENAME";
 		$bot = new telegram_bot($TOKEN);
 		//$bot->set_webhook();
-		$bot->set_webhook($WEBHOOKURL, $SSLCERTIFICATEFILE);
+		$bot->set_webhook($WEBHOOKURL, $SSLCERTIFICATEFILENAME);
 		echo "Registered!\n";
 	}
 }
