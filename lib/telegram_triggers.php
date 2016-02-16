@@ -56,7 +56,7 @@ class telegram_trigger_set {
 	}
 	public function run($telegrambot, $msg) { // text only messages (at least for now)
 		global $STATES_ENABLED;
-		$msg = str_ireplace("@".$this->botname, "", $msg);
+		$msg = trim(str_ireplace("@".$this->botname, "", $msg));
 		$fullpar = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $msg);
 		$res = array();
 		// triggering general trigger (one for all)
