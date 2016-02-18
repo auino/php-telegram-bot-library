@@ -243,7 +243,7 @@ Here is the PHP code of two sample bots (check the `sample` directory and config
 
 This bot does not make use of states functionality offered by the library and simply returns a picture of [Lena](https://en.wikipedia.org/wiki/Lenna).
 
-Check `sample/lena.php` file for the commented source code.
+Check [sample/lena.php](https://github.com/auino/php-telegram-bot-library/blob/master/sample/lena.php) file for the commented source code.
 
 #### Write-to-Developer Bot ####
 
@@ -254,7 +254,7 @@ Considered states are:
  2. `"in_chat"` state, entered after `/start` command is executed; in this state, the bot is waiting for a command (`/help` and `/write` commands are accepted here)
  3. `"waiting_for_input"` state, accepting any input from the user, hence registering the message to a local file and entering back to the `"in_chat"` state
 
-Check `sample/writetodev.php` file for the commented source code.
+Check [sample/writetodev.php](https://github.com/auino/php-telegram-bot-library/blob/master/sample/writetodev.php) file for the commented source code.
 
 ### Contacts ###
 
