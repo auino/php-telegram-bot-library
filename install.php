@@ -33,7 +33,7 @@ else { // you can register a new webhook only if you're not deleting existent we
 		else $SSLCERTIFICATEFILE = "@$SSLCERTIFICATEFILENAME";
 		$bot = new telegram_bot($TOKEN);
 		//$bot->set_webhook();
-		$bot->set_webhook($WEBHOOKURL, $SSLCERTIFICATEFILENAME);
+		$bot->set_webhook($WEBHOOKURL, $SSLCERTIFICATEFILE);
 		echo "Registered!\n";
 	}
 }
