@@ -84,11 +84,11 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_message($to, $msg, $id_msg=null, $reply=null, $type=null){
+	public function send_message($to, $msg, $id_msg=null, $reply=null, $type=null, $disable_preview=true){
 		$data = array();
 		$data["chat_id"]=$to;
 		$data["text"]=$msg;
-		$data["disable_web_page_preview"]="true";
+		$data["disable_web_page_preview"]=(string)$disable_preview;
 		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
 		if(isset($reply)) $data["reply_markup"]=$reply;
 		if(isset($type)) $data["parse_mode"]=$type; // "Markdown" or "HTML"; see https://core.telegram.org/bots/api#formatting-options
