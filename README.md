@@ -179,7 +179,7 @@ where `$newstate` identifies the new considered state.
 
 Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API) and [official Telegram Bot API](https://core.telegram.org/bots/api#sendchataction), following methods are supported:
  * `send_action($to, $action)`
- * `send_message($to, $msg, $id_msg=null, $reply=null, $type=null)`
+ * `send_message($to, $msg, $id_msg=null, $reply=null, $type=null, $disable_preview=true)`
  * `send_location($to, $lat, $lon, $id_msg=null, $reply=null)`
  * `send_sticker($to, $sticker, $id_msg=null, $reply=null)`
  * `send_video($to, $video, $id_msg=null, $reply=null)`
@@ -187,7 +187,7 @@ Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-AP
  * `send_audio($to, $audio, $id_msg=null, $reply=null)`
  * `send_document($to, $document, $id_msg=null, $reply=null)`
 
-Concerning the `send_message` function, accordingly to [formatting options](https://core.telegram.org/bots/api#formatting-options) provided by Telegram API, `"Markdown"` or `"HTML"` values can be provided.
+Concerning the `send_message` function, accordingly to [formatting options](https://core.telegram.org/bots/api#formatting-options) provided by Telegram API, `"Markdown"` or `"HTML"` values of the `$type` parameter can be provided.
 
 #### Automated Triggering ####
 
