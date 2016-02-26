@@ -13,7 +13,7 @@ $SETUPDBQUERIES = [
 	"CREATE TABLE `Logs` (`id` bigint(20) NOT NULL AUTO_INCREMENT, `bot` varchar(100) NOT NULL, `action` varchar(100) NOT NULL, `chat` int(11) NOT NULL, `type` varchar(30) NOT NULL, `content` varchar(250) NOT NULL, `date` varchar(30) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `bot` (`bot`,`action`,`chat`,`date`));"
 ];
 
-$STATES_ENABLED = true;
+$STATESENABLED = true;
 $STATESDBQUERIES = [
 	"CREATE TABLE `States` (`id` bigint(20) NOT NULL AUTO_INCREMENT, `bot` varchar(100) NOT NULL, `chat` int(11) NOT NULL, `state` varchar(100) DEFAULT NULL, PRIMARY KEY (`id`), UNIQUE KEY `bot` (`bot`,`chat`));"
 ];
@@ -46,7 +46,7 @@ if($SETUPDB) {
 	echo "Configured!\n";
 }
 
-if($STATES_ENABLED) {
+if($STATESENABLED) {
 	echo "Configuring States database...\n";
 	foreach($STATESDBQUERIES as $q) {
 		db_nonquery($q);
