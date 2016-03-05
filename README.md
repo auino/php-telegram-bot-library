@@ -132,7 +132,7 @@ Similarly, it's possible to register a trigger to use when a message includes sp
 $ts->register_trigger_text_intext("trigger_hello", ["hello"], $state);
 ```
 
-where `trigger_hello` identifies the triggered/callback function and `["hello"]` identifies the texts triggering that function.
+where the `$state` parameter is optional and `trigger_hello` identifies the triggered/callback function and `["hello"]` identifies the texts triggering that function.
 For instance, in this case, if the message `Hello World!` is received, the `trigger_hello` function is called.
 Note that in this case the [privacy mode](https://core.telegram.org/bots#privacy-mode) of your Telegram bot should be configured accordingly to your needs.
 
@@ -146,11 +146,27 @@ Also, it's possible to register a single generic trigger to use for each receive
 $ts->register_trigger_any("one_trigger_for_all", $state);
 ```
 
-where `one_trigger_for_all` is the name of the triggered/callback function.
+where the `$state` parameter is optional and `one_trigger_for_all` is the name of the triggered/callback function.
 
 The last `$state` parameter (optional, needed only if state machine functionality is enabled) identifies that the trigger is registered on the specified state, where `null` identifies the initial state and `"*"` identifies that the trigger has to be registered on each considered state.
 Alternatively, you can define a custom string identifying the prefered state.
 More information are given in the State Machines section.
+
+It is also possible to associate a trigger to a photo reception:
+
+```
+$ts->register_trigger_photo("trigger_photo", $state);
+```
+
+where the `$state` parameter is optional.
+
+It is also possible to associate a trigger to a photo reception:
+
+```
+$ts->register_trigger_location("trigger_location", $state);
+```
+
+where the `$state` parameter is optional.
 
 Finally, it's possible to register a trigger to use if anything goes wrong:
 
@@ -158,7 +174,7 @@ Finally, it's possible to register a trigger to use if anything goes wrong:
 $ts->register_trigger_error("trigger_err", $state);
 ```
 
-where `trigger_err` is the name of the triggered/callback function.
+where the `$state` parameter is optional and `trigger_err` is the name of the triggered/callback function.
 
 The last `$state` parameter (optional, needed only if state machine functionality is enabled) identifies that the trigger is registered on the specified state, where `null` identifies the initial state and `"*"` identifies that the trigger has to be registered on each considered state.
 Alternatively, you can define a custom string identifying the prefered state.

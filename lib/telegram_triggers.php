@@ -1,13 +1,4 @@
 <?php
-abstract class telegram_message_type {
-	const unknown = 0;
-	const text = 1;
-	const photo = 2;
-	const video = 3;
-	const location = 4;
-	const file = 5;
-}
-
 class telegram_function_parameters {
 	private $bot, $chatid, $state, $msg, $text, $par;
 	function __construct($b, $c, $s, $m, $t=null, $p=null) { $this->bot = $b; $this->chatid = $c; $this->state = $s; $this->msg = $m; $this->text = $t; $this->par = $p; }
@@ -28,7 +19,7 @@ class telegram_event {
 
 class telegram_trigger {
 	private $type, $callback, $events;
-	function __construct($t, c, $e=null) { $this->type = $t; $this->callback = $c; $this->events = $e; }
+	function __construct($t, $c, $e=null) { $this->type = $t; $this->callback = $c; $this->events = $e; }
 	function type() { return $this->type; }
 	function callback() { return $this->callback; }
 	function events() { return $this->events; }
@@ -43,6 +34,7 @@ class telegram_trigger_set {
 	private $triggers_text_command = array();
 	private $triggers_text_intext = array();
 	private $triggers_photo = array();
+	private $triggers_location = array();
 	private $trigger_error = null;
 	function __construct($b, $c=null, $st=true) { $this->botname = $b; $this->chatid = $c; $this->singletrigger = $st; if($c!=null) $this->state = new telegram_state($b, $c); }
 	public function register_trigger_any($callback, $state="*") {
@@ -50,33 +42,41 @@ class telegram_trigger_set {
 		$this->trigger_any = $callback;
 	}
 	private function getmessagetype($m) {
-		$t = telegram_message_type::unknown;
-		if($m->photo != null) return telegram_message_type::photo;
-		if($m->text != null) return telegram_message_type::text;
+		$t = "unknown";
+		$v = @$m->text; if(isset($v) && ($v != null)) $t = "text";
+		$v = @$m->photo; if(isset($v) && ($v != null)) $t = "photo";
+		$v = @$m->location; if(isset($v) && ($v != null)) $t = "location";
+		return $t;
 	}
 	public function register_trigger_text_command($callback, $names, $count=-1, $state="*") {
 		if(!$this->state->iscurrent($state)) return;
-		$type = telegram_message_type::text;
+		$type = "text";
 		$evs = array();
-		foreach($names as $name) array_push($evs, new telegram_event($type, $name, $count));
-		$t = new telegram_trigger($callback, $evs);
+		foreach($names as $name) array_push($evs, new telegram_event($name, $count));
+		$t = new telegram_trigger($type, $callback, $evs);
 		array_push($this->triggers_text_command, $t);
 	}
 	public function register_trigger_text_intext($callback, $texts, $state="*") {
 		if(!$this->state->iscurrent($state)) return;
-		$type = telegram_message_type::text;
+		$type = "text";
 		$evs = array();
-		foreach($texts as $text) array_push($evs, new telegram_event($type, $text, -1));
-		$t = new telegram_trigger($callback, $evs);
+		foreach($texts as $text) array_push($evs, new telegram_event($text, -1));
+		$t = new telegram_trigger($type, $callback, $evs);
 		array_push($this->triggers_text_intext, $t);
 	}
 	public function register_trigger_photo($callback, $state="*") {
 		if(!$this->state->iscurrent($state)) return;
-		$type = telegram_message_type::photo;
+		$type = "photo";
 		$evs = array();
-		array_push($evs, new telegram_event($type));
-		$t = new telegram_trigger($callback, $evs);
+		$t = new telegram_trigger($type, $callback);
 		array_push($this->triggers_photo, $t);
+	}
+	public function register_trigger_location($callback, $state="*") {
+		if(!$this->state->iscurrent($state)) return;
+		$type = "location";
+		$evs = array();
+		$t = new telegram_trigger($type, $callback);
+		array_push($this->triggers_location, $t);
 	}
 	public function register_trigger_error($callback, $state="*") {
 		if(!$this->state->iscurrent($state)) return;
@@ -84,9 +84,9 @@ class telegram_trigger_set {
 	}
 	public function run($telegrambot, $msg) {
 		global $STATES_ENABLED;
-		$type = getmessagetype($msg);
-		$text = $msg->text;
-		$text = trim(str_ireplace("@".$this->botname, "", $text));
+		$type = $this->getmessagetype($msg);
+		$text = null;
+		if($type == "text") $text = @trim(str_ireplace("@".$this->botname, "", $msg->text));
 		$fullpar = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $msg, $text, [$text]);
 		$res = array();
 		// triggering general trigger (one for all)
@@ -97,7 +97,7 @@ class telegram_trigger_set {
 			if($tmpres) array_push($res, $tmpres);
 			if($this->singletrigger) return $res;
 		}
-		if($type == telegram_message_type::text) { // text based triggers
+		if($type == "text") { // text based triggers
 			// checking command strings
 			$textpar = explode(" ", $text);
 			$cmd = array_shift($textpar);
@@ -135,12 +135,22 @@ class telegram_trigger_set {
 			// returning resulting array
 			return $res;
 		}
-		if($type == telegram_message_type::photo) { // photo based triggers
+		if($type == "photo") { // photo based triggers
 			$par = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $msg);
 			foreach($this->triggers_photo as $t) {
 				$c = $t->callback();
 				echo "Triggering $c...\n";
-				$tmpres = call_user_func_array($c);
+				$tmpres = call_user_func_array($c, [$par]);
+				if($tmpres) array_push($res, $tmpres);
+				if($this->singletrigger) return $res;
+			}
+		}
+		if($type == "location") { // location based triggers
+			$par = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $msg);
+			foreach($this->triggers_location as $t) {
+				$c = $t->callback();
+				echo "Triggering $c...\n";
+				$tmpres = call_user_func_array($c, [$par]);
 				if($tmpres) array_push($res, $tmpres);
 				if($this->singletrigger) return $res;
 			}

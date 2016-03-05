@@ -63,7 +63,7 @@ $data = $bot->read_post_message();
 $message = $data->message;
 $date = $message->date;
 $chatid = $message->chat->id;
-$text = $message->text;
+$text = @$message->text;
 
 // instantiating a new triggers set
 $ts = new telegram_trigger_set($TELEGRAM_BOTNAME, $chatid, $singletrigger);
@@ -79,7 +79,7 @@ $ts->register_trigger_error("trigger_err"); // state parameter is ignored
 $response = $ts->run($bot, $message); // returns an array of triggered events
 
 // log messages exchange on the database
-db_log($TELEGRAM_BOTNAME, 'recv', $chatid, 'text', $text, $date);
-if(count($response)>0) foreach($response as $r) db_log($TELEGRAM_BOTNAME, 'sent', $chatid, $r['type'], $r['content'], $date);
-else db_log($TELEGRAM_BOTNAME, 'error', $chatid, 'Error', $date);
+@db_log($TELEGRAM_BOTNAME, 'recv', $chatid, 'text', $text, $date);
+if(count($response)>0) foreach($response as $r) @db_log($TELEGRAM_BOTNAME, 'sent', $chatid, $r['type'], $r['content'], $date);
+else @db_log($TELEGRAM_BOTNAME, 'error', $chatid, 'Error', $date);
 ?>
