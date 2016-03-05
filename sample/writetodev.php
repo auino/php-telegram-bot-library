@@ -72,10 +72,11 @@ function trigger_err($p) {
 $bot = new telegram_bot($TELEGRAM_TOKEN);
 
 // receiving data sent from the user
-$message = $bot->read_post_message();
-$date = $message->message->date;
-$chatid = $message->message->chat->id;
-$text = $message->message->text;
+$data = $bot->read_post_message();
+$message = $data->message;
+$date = $message->date;
+$chatid = $message->chat->id;
+$text = $message->text;
 
 // instantiating a new triggers set
 $ts = new telegram_trigger_set($TELEGRAM_BOTNAME, $chatid, $singletrigger);
@@ -89,7 +90,8 @@ $ts->register_trigger_any("trigger_input", "waiting_for_input"); // each input r
 $ts->register_trigger_error("trigger_err", "*"); // this trigger is registered indipendently on the state
 
 // running triggers management
-$response = $ts->run($bot, $text); // returns an array of triggered events
+$response = $ts->run($bot, $message); // returns an array of triggered events
+
 // log messages exchange on the database
 db_log($TELEGRAM_BOTNAME, 'recv', $chatid, 'text', $text, $date);
 if(count($response)>0) foreach($response as $r) db_log($TELEGRAM_BOTNAME, 'sent', $chatid, $r['type'], $r['content'], $date);

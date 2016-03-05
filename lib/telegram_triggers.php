@@ -1,11 +1,12 @@
 <?php
 class telegram_function_parameters {
-	private $bot, $chatid, $state, $par;
-	function __construct($b, $c, $s, $p) { $this->bot = $b; $this->chatid = $c; $this->state=$s; $this->par = $p; }
+	private $bot, $chatid, $state, $msg, $par;
+	function __construct($b, $c, $s, $m, $p) { $this->bot = $b; $this->chatid = $c; $this->state = $s; $this->msg = $m, $this->par = $p; }
 	function bot() { return $this->bot; }
 	function chatid() { return $this->chatid; }
 	function state() { return $this->state; }
-	function parameters() { return $this->par; } // this is a Message object (see https://core.telegram.org/bots/api#message)
+	function message() { return $this->msg; } // this is a Message object (see https://core.telegram.org/bots/api#message)
+	function parameters() { return $this->par; }
 }
 
 class telegram_event {
@@ -54,10 +55,11 @@ class telegram_trigger_set {
 		if(!$this->state->iscurrent($state)) return;
 		$this->trigger_error = $callback;
 	}
-	public function run($telegrambot, $msg) { // text only messages (at least for now)
+	public function run($telegrambot, $msg) {
 		global $STATES_ENABLED;
-		$msg = trim(str_ireplace("@".$this->botname, "", $msg));
-		$fullpar = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $msg);
+		$text = $msg->text;
+		$text = trim(str_ireplace("@".$this->botname, "", $text));
+		$fullpar = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $text);
 		$res = array();
 		// triggering general trigger (one for all)
 		if($this->trigger_any != null) {
@@ -68,16 +70,16 @@ class telegram_trigger_set {
 			if($this->singletrigger) return $res;
 		}
 		// checking command strings
-		$msgpar = explode(" ", $msg);
-		$cmd = array_shift($msgpar);
-		$par = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $msgpar);
+		$textpar = explode(" ", $text);
+		$cmd = array_shift($textpar);
+		$par = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $textpar);
 		foreach($this->triggers_command as $t) {
 			$ev = $t->events();
 			$c = $t->callback();
 			foreach($ev as $e) {
 				$name = $e->name();
 				$count = $e->count();
-				if(((strtolower($msg) == strtolower($name)) && (intval($count) == 0)) || ((strtolower($cmd) == strtolower($name)) && ((intval($count)<0) || (intval($count)==@count($msgpar))))) {
+				if(((strtolower($text) == strtolower($name)) && (intval($count) == 0)) || ((strtolower($cmd) == strtolower($name)) && ((intval($count)<0) || (intval($count)==@count($textpar))))) {
 					echo "Triggering $c...\n";
 					$tmpres = call_user_func_array($c, [$par]);
 					if($tmpres) array_push($res, $tmpres);
@@ -91,7 +93,7 @@ class telegram_trigger_set {
 			$c = $t->callback();
 			foreach($ev as $e) {
 				$name = $e->name();
-				if(strpos(strtolower($msg), strtolower($name)) !== false) {
+				if(strpos(strtolower($text), strtolower($name)) !== false) {
 					echo "Triggering $c...\n";
 					$tmpres = call_user_func_array($c, [$fullpar]);
 					if($tmpres) array_push($res, $tmpres);

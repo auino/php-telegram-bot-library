@@ -59,10 +59,11 @@ where `$token` is the Telegram token of your bot.
 Accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API), it's possible to get received data through the `$bot` object:
 
 ```
-$message = $bot->read_post_message();
-$date = $message->message->date;
-$chatid = $message->message->chat->id;
-$text = $message->message->text;
+$data = $bot->read_post_message();
+$message = $data->message;
+$date = $message->date;
+$chatid = $message->chat->id;
+$text = $message->text;
 ```
 
 The next step is to instantiate a new trigger set:
@@ -116,7 +117,8 @@ Following functions are available on `telegram_function_parameters` objects:
  * `bot()` returning the instance of the bot
  * `chatid()` returning the identifier of the origin chat/sender
  * `state()` returning a `trigger_state` object representing the state of the current chat
- * `parameters()` returning an array of parameters passed to the function (a [Message](https://core.telegram.org/bots/api#message) object of official Telegram API)
+ * `message()` returning a Telegram [Message object](https://core.telegram.org/bots/api#message) representing the received message
+ * `parameters()` returning an array of parameters (represented as strings) passed to the function
 
 The `logarray()` function returns an associative array with `type` and `content` keys, used for logging purposes:
 in this case, a `text` log (each value is good) containing the `$answer` content is returned.
@@ -161,7 +163,7 @@ The last `$state` parameter (optional, needed only if state machine functionalit
 Alternatively, you can define a custom string identifying the prefered state.
 More information are given in the State Machines section.
 
-If `$singletrigger=true` (see description above), accordingly to registration function names, the order of triggering is the following one: trigger_any, trigger_command, trigger_intext, trigger_error.
+If `$singletrigger=true` (see description in the [Instructions section](https://github.com/auino/php-telegram-bot-library#instructions)), accordingly to registration function names, the order of triggering is the following one: trigger_any, trigger_command, trigger_intext, trigger_error.
 
 ##### State Machines #####
 
@@ -194,10 +196,11 @@ Concerning the `send_message` function, accordingly to [formatting options](http
 After the triggers have been configured (it's possible to set up multiple triggers/callbacks: in case of multiple triggers associated to the same message/text, each callback is triggered), the triggering process have to be executed:
 
 ```
-$response = $ts->run($bot, $text);
+$response = $ts->run($bot, $message);
 ```
 
-where `$response` returns an array of resulting values for the executed callbacks (which should be the result of a `logarray()` call).
+where `$message` is a Telegram [Message object](https://core.telegram.org/bots/api#message) (in the sample reported in [Instructions section](https://github.com/auino/php-telegram-bot-library#instructions), `$message = $data->message`).
+Returned `$response` object is an array of resulting values for the executed callbacks (which should be the result of a `logarray()` call).
 If `$response` is an empty array, nothing has been triggered.
 
 In case state machine functionality is enabled, if the `run()` function is called more than a single time, it will be bounded to the initial state.
@@ -224,9 +227,10 @@ Following functions are available on the configured database:
 ### Notes for who's upgrading ###
 
 Unlike previous versions of the library, the `$chatid` parameter is no more required in the `$ts->run()` function.
+Moreover, the `$text` parameter is replaced by a `$message` parameter, retrieved through `$data->message` (see [Instructions section](https://github.com/auino/php-telegram-bot-library#instructions)).
 
 ```
-$response = $ts->run($bot, $text);
+$response = $ts->run($bot, $message);
 ```
 
 It is instead required by the `telegram_triggers_set` constructor.
