@@ -69,9 +69,9 @@ $text = $message->text;
 $ts = new telegram_trigger_set($TELEGRAM_BOTNAME, $chatid, $singletrigger);
 
 // registering the triggers
-$ts->register_trigger_command("trigger_welcome", ["/start","/welcome","/hi"], 0); // state parameter is ignored
-$ts->register_trigger_command("trigger_help", ["/help"], 0); // state parameter is ignored
-$ts->register_trigger_command("trigger_photo", ["/getphoto","/photo","/picture"]); // state and count parameters are ignored
+$ts->register_trigger_text_command("trigger_welcome", ["/start","/welcome","/hi"], 0); // state parameter is ignored
+$ts->register_trigger_text_command("trigger_help", ["/help"], 0); // state parameter is ignored
+$ts->register_trigger_text_command("trigger_photo", ["/getphoto","/photo","/picture"]); // state and count parameters are ignored
 // error trigger
 $ts->register_trigger_error("trigger_err"); // state parameter is ignored
 

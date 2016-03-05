@@ -82,7 +82,7 @@ Otherwise, multiple triggers may be called (e.g. it can be useful to support mul
 It's now possible to set up triggers for specific commands:
 
 ```
-$ts->register_trigger_command("trigger_welcome", ["/start","/welcome","/hi"], 0, $state);
+$ts->register_trigger_text_command("trigger_welcome", ["/start","/welcome","/hi"], 0, $state);
 ```
 
 where `trigger_welcome` is the name of the triggered/callback function and `0` identifies the number of parameters accepted (considering the remaining of the received text, splitted by spaces; `-1`, or no parameter, is used to trigger the function independently on the number of parameters).
@@ -129,7 +129,7 @@ This bot would simply respond `/start`, `/welcome`, and `/hi` messages with a si
 Similarly, it's possible to register a trigger to use when a message includes specific text (case insensitive check):
 
 ```
-$ts->register_trigger_intext("trigger_hello", ["hello"], $state);
+$ts->register_trigger_text_intext("trigger_hello", ["hello"], $state);
 ```
 
 where `trigger_hello` identifies the triggered/callback function and `["hello"]` identifies the texts triggering that function.
@@ -164,7 +164,7 @@ The last `$state` parameter (optional, needed only if state machine functionalit
 Alternatively, you can define a custom string identifying the prefered state.
 More information are given in the State Machines section.
 
-If `$singletrigger=true` (see description in the [Instructions section](https://github.com/auino/php-telegram-bot-library#instructions)), accordingly to registration function names, the order of triggering is the following one: trigger_any, trigger_command, trigger_intext, trigger_error.
+If `$singletrigger=true` (see description in the [Instructions section](https://github.com/auino/php-telegram-bot-library#instructions)), accordingly to registration function names, the order of triggering is the following one: trigger_any, trigger_text_command, trigger_text_intext, trigger_error.
 
 ##### State Machines #####
 
@@ -239,6 +239,8 @@ It is instead required by the `telegram_triggers_set` constructor.
 ```
 $ts = new telegram_trigger_set($botname, $chatid, $singletrigger);
 ```
+
+Relatively to the previous `$ts->register_trigger_command` and `$ts->register_trigger_intext` functions, since we are working to support non text messages (i.e. photos, location, etc.), method names have been respectively changed to `$ts->register_trigger_text_command` and `$ts->register_trigger_text_intext`.
 
 ### Sample Bots ###
 

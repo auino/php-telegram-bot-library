@@ -82,9 +82,9 @@ $text = $message->text;
 $ts = new telegram_trigger_set($TELEGRAM_BOTNAME, $chatid, $singletrigger);
 
 // registering the triggers
-$ts->register_trigger_command("trigger_welcome", ["/start","/welcome","/hi"], 0, null); // initial state
-$ts->register_trigger_command("trigger_help", ["/help"], 0, "in_chat"); // /help command is accepted only when state is "in_chat"
-$ts->register_trigger_command("trigger_write", ["/write"], "in_chat"); // /write command is accepted only when state is "in_chat"
+$ts->register_trigger_text_command("trigger_welcome", ["/start","/welcome","/hi"], 0, null); // initial state
+$ts->register_trigger_text_command("trigger_help", ["/help"], 0, "in_chat"); // /help command is accepted only when state is "in_chat"
+$ts->register_trigger_text_command("trigger_write", ["/write"], "in_chat"); // /write command is accepted only when state is "in_chat"
 $ts->register_trigger_any("trigger_input", "waiting_for_input"); // each input retrieved will trigger the trigger_input function when state is "waiting_for_input"
 // error trigger
 $ts->register_trigger_error("trigger_err", "*"); // this trigger is registered indipendently on the state
