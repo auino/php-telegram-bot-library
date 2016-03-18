@@ -8,7 +8,7 @@ class telegram_function_parameters {
 	function message() { return $this->msg; } // this is a Message object (see https://core.telegram.org/bots/api#message)
 	function text() { return $this->text; }
 	function parameters() { return $this->par; }
-	function fileid() { return $this->message()[0]->file_id; }
+	function fileid() { try{ return $this->message()[0]->file_id; } catch(Exception $e) { return null; } } // always the first one is returned
 	function type() {
 		if($this->msg->photo != '') return 'photo';
 		if($this->msg->video != '') return 'video';

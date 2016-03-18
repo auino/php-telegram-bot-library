@@ -119,6 +119,8 @@ Following functions are available on `telegram_function_parameters` objects:
  * `state()` returning a `trigger_state` object representing the state of the current chat
  * `message()` returning a Telegram [Message object](https://core.telegram.org/bots/api#message) representing the received message
  * `text()` returning received text (as string)
+ * `fileid()` returning the file identifier, if a file is embedded in the message
+ * `type()` returning the message type (as string)
  * `parameters()` returning an array of parameters (represented as strings) passed to the function
 
 The `logarray()` function returns an associative array with `type` and `content` keys, used for logging purposes:
