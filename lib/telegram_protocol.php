@@ -237,16 +237,18 @@ class telegram_bot {
 			$data["file_id"] = $file_id;
 			$response = $this->control_api("/getFile", $data);
 			$file_path = $response->result->file_path;
+			$ext = strrchr($file_path, '.');
 			// getting file content
 			$file_content = $this->file_request($file_path);
 			// storing to file
+			$output_file = "$output_file.$ext";
 			$fp = fopen($output_file, 'w');
 			fwrite($fp, $file_content);
 			fclose($fp);
-			return true;
+			return $output_file;
 		}
 		catch(Exception $e) { }
-		return false;
+		return null;
 	}
 
 	public function read_post_message(){

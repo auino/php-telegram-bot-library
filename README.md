@@ -214,10 +214,11 @@ Concerning the `send_message` function, accordingly to [formatting options](http
 It is also possible to retrive a file from `$file_id` and store it to `$output_file` through the following function:
 
 ```
-get_file($file_id, $output_file)
+$filename = get_file($file_id, $output_file)
 ```
 
 where `$file_id` is retrieved through `telegram_function_parameters` class methods (see [Triggers Definition](https://github.com/auino/php-telegram-bot-library#triggers-definition) section).
+Returned value is the full `$filename` including file extension (computed by appending the extension to the `$output_file` parameter), `null` is something goes wrong.
 
 #### Automated Triggering ####
 
