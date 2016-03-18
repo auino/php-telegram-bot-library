@@ -10,6 +10,7 @@ This library allows you to easily set up a PHP based Telegram Bot.
  * Callback based
  * State machines support
  * Transparent text parsing management
+ * Non text messages support (i.e. photo, video, location, etc.)
  * Simplified communication through the Telegram protocol (as an extension of [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API))
  * Actions support (i.e. the top "Bot is sending a picture..." notification is implicit)
  * Self-signed SSL certificate support
