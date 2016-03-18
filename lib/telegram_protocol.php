@@ -1,8 +1,14 @@
 <?php
-// This file implements an extension of:
-// https://github.com/gorebrau/PHP-telegram-bot-API
-// - self-signed certificate are now supported
-// - automatic actions are now sent before sending data (the result is, e.g., the "is sending a picture..." message on top of the Telegram client)
+/*
+ * This file implements an extension of:
+ *  https://github.com/gorebrau/PHP-telegram-bot-API
+ *
+ * Following additional features are implemented:
+ *  - self-signed certificate are now supported
+ *  - automatic actions are now sent before sending data (the result is, e.g., the "is sending a picture..." message on top of the Telegram client)
+ *  - a get_file($file_id, $output_file) method is implemented, downloading file content from $file_id and storing it to $output_file
+ *
+ */
 
 class ReplyKeyboardMarkup{
 	public $keyboard;
@@ -224,19 +230,23 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function get_file($file_id, $output) {
-		// getting file path
-		$data = array();
-		$data["file_id"] = $file_id;
-		$response = $this->control_api("/getFile", $data);
-		$file_path = $response->result->file_path;
-		// getting file content
-		$file_content = $this->file_request($file_path);
-		// storing to file
-		$fp = fopen($output, 'w');
-		fwrite($fp, $file_content);
-		fclose($fp);
-		return true;
+	public function get_file($file_id, $output_file) {
+		try {
+			// getting file path
+			$data = array();
+			$data["file_id"] = $file_id;
+			$response = $this->control_api("/getFile", $data);
+			$file_path = $response->result->file_path;
+			// getting file content
+			$file_content = $this->file_request($file_path);
+			// storing to file
+			$fp = fopen($output_file, 'w');
+			fwrite($fp, $file_content);
+			fclose($fp);
+			return true;
+		}
+		catch(Exception $e) { }
+		return false;
 	}
 
 	public function read_post_message(){

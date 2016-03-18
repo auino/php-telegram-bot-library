@@ -93,7 +93,7 @@ For commands not starting with a `/` symbol, or not directly sent to the bot, [p
 
 The last `$state` parameter (optional, needed only if state machine functionality is enabled) identifies that the trigger is registered on the specified state, where `null` identifies the initial state and `"*"` identifies that the trigger has to be registered on each considered state.
 Alternatively, you can define a custom string identifying the prefered state.
-More information are given in the State Machines section.
+More information are given in the [State Machines section](https://github.com/auino/php-telegram-bot-library#state-machines).
 
 ##### Triggers Definition #####
 
@@ -140,7 +140,7 @@ Note that in this case the [privacy mode](https://core.telegram.org/bots#privacy
 
 The last `$state` parameter (optional, needed only if state machine functionality is enabled) identifies that the trigger is registered on the specified state, where `null` identifies the initial state and `"*"` identifies that the trigger has to be registered on each considered state.
 Alternatively, you can define a custom string identifying the prefered state.
-More information are given in the State Machines section.
+More information are given in the [State Machines section](https://github.com/auino/php-telegram-bot-library#state-machines).
 
 Also, it's possible to register a single generic trigger to use for each received command:
 
@@ -152,7 +152,7 @@ where the `$state` parameter is optional and `one_trigger_for_all` is the name o
 
 The last `$state` parameter (optional, needed only if state machine functionality is enabled) identifies that the trigger is registered on the specified state, where `null` identifies the initial state and `"*"` identifies that the trigger has to be registered on each considered state.
 Alternatively, you can define a custom string identifying the prefered state.
-More information are given in the State Machines section.
+More information are given in the [State Machines section](https://github.com/auino/php-telegram-bot-library#state-machines).
 
 It is also possible to associate a trigger to a photo reception:
 
@@ -180,7 +180,7 @@ where the `$state` parameter is optional and `trigger_err` is the name of the tr
 
 The last `$state` parameter (optional, needed only if state machine functionality is enabled) identifies that the trigger is registered on the specified state, where `null` identifies the initial state and `"*"` identifies that the trigger has to be registered on each considered state.
 Alternatively, you can define a custom string identifying the prefered state.
-More information are given in the State Machines section.
+More information are given in the [State Machines section](https://github.com/auino/php-telegram-bot-library#state-machines).
 
 If `$singletrigger=true` (see description in the [Instructions section](https://github.com/auino/php-telegram-bot-library#instructions)), accordingly to registration function names, the order of triggering is the following one: trigger_any, trigger_text_command, trigger_text_intext, trigger_error.
 
@@ -209,6 +209,14 @@ Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-AP
  * `send_document($to, $document, $id_msg=null, $reply=null)`
 
 Concerning the `send_message` function, accordingly to [formatting options](https://core.telegram.org/bots/api#formatting-options) provided by Telegram API, `"Markdown"` or `"HTML"` values of the `$type` parameter can be provided.
+
+It is also possible to retrive a file from `$file_id` and store it to `$output_file` through the following function:
+
+```
+get_file($file_id, $output_file)
+```
+
+where `$file_id` is retrieved through `telegram_function_parameters` class methods (see [Triggers Definition](https://github.com/auino/php-telegram-bot-library#triggers-definition) section).
 
 #### Automated Triggering ####
 
