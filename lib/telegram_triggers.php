@@ -15,6 +15,8 @@ class telegram_function_parameters {
 		if($this->msg->audio != '') return 'audio';
 		if($this->msg->voice != '') return 'voice';
 		if($this->msg->document != '') return 'document';
+		if($this->msg->sticker != '') return 'sticker';
+		if($this->msg->contact != '') return 'contact';
 		if($this->msg->location != '') return 'location';
 		if($this->text != '') return 'text';
 		return 'other';
