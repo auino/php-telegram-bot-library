@@ -8,6 +8,17 @@ class telegram_function_parameters {
 	function message() { return $this->msg; } // this is a Message object (see https://core.telegram.org/bots/api#message)
 	function text() { return $this->text; }
 	function parameters() { return $this->par; }
+	function fileid() { return $this->message()[0]->file_id; }
+	function type() {
+		if($this->msg->photo != '') return 'photo';
+		if($this->msg->video != '') return 'video';
+		if($this->msg->audio != '') return 'audio';
+		if($this->msg->voice != '') return 'voice';
+		if($this->msg->document != '') return 'document';
+		if($this->msg->location != '') return 'location';
+		if($this->text != '') return 'text';
+		return 'other';
+	}
 }
 
 class telegram_event {

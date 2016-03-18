@@ -56,6 +56,11 @@ class telegram_bot {
 		return curl_exec($ch);
 	}
 
+	private function file_request($file_path) {
+		$token = $this->token;
+		return $this->open_url("https://api.telegram.org/file/bot$token/$file_path");
+	}
+
 	private function control_api($action, $data=NULL){
 		$token = $this->token;
 		$response = json_decode($this->open_url("https://api.telegram.org/bot$token$action", "POST", $data));
@@ -217,6 +222,21 @@ class telegram_bot {
 		if(isset($limit)) $data["limit"]=$limit;
 		$response = $this->control_api("/getUserProfilePhotos", $data);
 		return $response;
+	}
+
+	public function get_file($file_id, $output) {
+		// getting file path
+		$data = array();
+		$data["file_id"] = $file_id;
+		$response = $this->control_api("/getFile", $data);
+		$file_path = $response->result->file_path;
+		// getting file content
+		$file_content = $this->file_request($file_path);
+		// storing to file
+		$fp = fopen($output, 'w');
+		fwrite($fp, $file_content);
+		fclose($fp);
+		return true;
 	}
 
 	public function read_post_message(){
