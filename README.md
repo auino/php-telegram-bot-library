@@ -117,11 +117,11 @@ Following functions are available on `telegram_function_parameters` objects:
  * `bot()` returning the instance of the bot
  * `chatid()` returning the identifier of the origin chat/sender
  * `state()` returning a `trigger_state` object representing the state of the current chat
- * `message()` returning a Telegram [Message object](https://core.telegram.org/bots/api#message) representing the received message
  * `text()` returning received text (as string)
- * `fileid()` returning the file identifier, if a file is embedded in the message
- * `type()` returning the message type (as string)
  * `parameters()` returning an array of parameters (represented as strings) passed to the function
+ * `message()` returning a Telegram [Message object](https://core.telegram.org/bots/api#message) representing the received message
+ * `fileid()` returning the file identifier, if a file is embedded in the message, `null` otherwise
+ * `type()` returning the message type (as string; following values are available: `'photo'`, `'video'`, `'audio'`, `'voice'`, `'document'`, `'sticker'`, `'contact'`, `'location'`, `'text'`, `'other'`)
 
 The `logarray()` function returns an associative array with `type` and `content` keys, used for logging purposes:
 in this case, a `text` log (each value is good) containing the `$answer` content is returned.
