@@ -236,12 +236,13 @@ class telegram_bot {
 			$data = array();
 			$data["file_id"] = $file_id;
 			$response = $this->control_api("/getFile", $data);
+			if ($response->ok != 1) return null; // no downloadable file like contact or location
 			$file_path = $response->result->file_path;
 			$ext = strrchr($file_path, '.');
 			// getting file content
 			$file_content = $this->file_request($file_path);
 			// storing to file
-			$output_file = "$output_file.$ext";
+			$output_file = "$output_file$ext";
 			$fp = fopen($output_file, 'w');
 			fwrite($fp, $file_content);
 			fclose($fp);

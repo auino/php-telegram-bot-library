@@ -11,7 +11,16 @@ class telegram_function_parameters {
 	function fileid() {
 		try {
 			$obj = $this->message();
-			if($this->type() == 'photo') $obj = $obj[0]->file_id; // for photos, an array of photos with different sizes is returned; we always consider the first element
+			if($this->type() == 'text') return null;
+			if($this->type() == 'other') return null;
+			if($this->type() == 'photo') $obj = $obj->photo[count($this->message()->photo)-1]; // for photos, an array of photos with different sizes is returned; we always consider the last element with higher resolution
+			if($this->type() == 'video') $obj = $obj->video;
+			if($this->type() == 'audio') $obj = $obj->audio;
+			if($this->type() == 'voice') $obj = $obj->voice;
+			if($this->type() == 'document') $obj = $obj->document;
+			if($this->type() == 'sticker') $obj = $obj->sticker;
+			if($this->type() == 'contact') $obj = $obj->contact;
+			if($this->type() == 'location') $obj = $obj->location;
 			return $obj->file_id;
 		} catch(Exception $e) { return null; }
 	}
