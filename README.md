@@ -277,8 +277,8 @@ It is possible to bind it to the new state (different from initial one) by re-in
 At the end, it's possible to log receive and send events:
 
 ```
-db_log($botname, 'recv', $chatid, 'text', $text, $date);
-db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
+@db_log($botname, 'recv', $chatid, 'text', $text, $date);
+@db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
 ```
 
 #### Database Utilities ####
