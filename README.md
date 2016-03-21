@@ -313,7 +313,7 @@ Here is the PHP code of two sample bots (check the `sample` directory and config
 
 #### Lena Bot ####
 
-This bot does not make use of states functionality offered by the library and simply returns a picture of [Lena](https://en.wikipedia.org/wiki/Lenna).
+This is a trivial bot simply returning a picture of [Lena](https://en.wikipedia.org/wiki/Lenna) when the `/lena` command is triggered.
 
 Check [sample/lena.php](https://github.com/auino/php-telegram-bot-library/blob/master/sample/lena.php) file for the commented source code.
 

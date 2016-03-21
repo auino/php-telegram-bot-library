@@ -23,7 +23,7 @@ function trigger_welcome($p) {
 
 function trigger_help($p) {
     try {
-        $answer = "Try /photo to get a photo...";
+        $answer = "Try /lena to get a picture of Lena.";
         $p->bot()->send_message($p->chatid(), $answer);
         return logarray('text', $answer);
     }
@@ -33,7 +33,7 @@ function trigger_help($p) {
 function trigger_photo($p) {
     try {
         $pic = "lena.jpg";
-        $caption = "Look at this picture!";
+        $caption = "Look at Lena's picture!";
         $p->bot()->send_photo($p->chatid(), "$pic", $caption);
         return logarray("photo", "[$pic] $caption"); // you choose the format you prefer
     }
@@ -71,7 +71,7 @@ $ts = new telegram_trigger_set($TELEGRAM_BOTNAME, $chatid, $singletrigger);
 // registering the triggers
 $ts->register_trigger_text_command("trigger_welcome", ["/start","/welcome","/hi"], 0); // state parameter is ignored
 $ts->register_trigger_text_command("trigger_help", ["/help"], 0); // state parameter is ignored
-$ts->register_trigger_text_command("trigger_photo", ["/getphoto","/photo","/picture"]); // state and count parameters are ignored
+$ts->register_trigger_text_command("trigger_photo", ["/lena","/getphoto","/photo","/picture"]); // state and count parameters are ignored
 // error trigger
 $ts->register_trigger_error("trigger_err"); // state parameter is ignored
 
