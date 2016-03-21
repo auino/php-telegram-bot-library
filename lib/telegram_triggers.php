@@ -1,7 +1,10 @@
 <?php
 class telegram_function_parameters {
 	private $bot, $chatid, $state, $msg, $text, $par;
+	public static $type_text='text', $type_photo='photo', $type_video='video', $type_audio='audio', $type_voice='voice', $type_document='document', $type_sticker='sticker', $type_contact='contact', $type_location='location', $type_other='other';
 	function __construct($b, $c, $s, $m, $t=null, $p=null) { $this->bot = $b; $this->chatid = $c; $this->state = $s; $this->msg = $m; $this->text = $t; $this->par = $p; }
+	function set_text($t) { $this->text = $t; }
+	function set_parameters($p) { $this->par = $p; }
 	function bot() { return $this->bot; }
 	function chatid() { return $this->chatid; }
 	function state() { return $this->state; }
@@ -11,30 +14,30 @@ class telegram_function_parameters {
 	function fileid() {
 		try {
 			$obj = $this->message();
-			if($this->type() == 'text') return null;
-			if($this->type() == 'other') return null;
-			if($this->type() == 'photo') $obj = $obj->photo[count($this->message()->photo)-1]; // for photos, an array of photos with different sizes is returned; we always consider the last element with higher resolution
-			if($this->type() == 'video') $obj = $obj->video;
-			if($this->type() == 'audio') $obj = $obj->audio;
-			if($this->type() == 'voice') $obj = $obj->voice;
-			if($this->type() == 'document') $obj = $obj->document;
-			if($this->type() == 'sticker') $obj = $obj->sticker;
-			if($this->type() == 'contact') $obj = $obj->contact;
-			if($this->type() == 'location') $obj = $obj->location;
+			if($this->type() == telegram_function_parameters::$type_text) return null;
+			if($this->type() == telegram_function_parameters::$type_other) return null;
+			if($this->type() == telegram_function_parameters::$type_photo) $obj = $obj->photo[count($this->message()->photo)-1]; // for photos, an array of photos with different sizes is returned; we always consider the last element with higher resolution
+			if($this->type() == telegram_function_parameters::$type_video) $obj = $obj->video;
+			if($this->type() == telegram_function_parameters::$type_audio) $obj = $obj->audio;
+			if($this->type() == telegram_function_parameters::$type_voice) $obj = $obj->voice;
+			if($this->type() == telegram_function_parameters::$type_document) $obj = $obj->document;
+			if($this->type() == telegram_function_parameters::$type_sticker) $obj = $obj->sticker;
+			if($this->type() == telegram_function_parameters::$type_contact) $obj = $obj->contact;
+			if($this->type() == telegram_function_parameters::$type_location) $obj = $obj->location;
 			return $obj->file_id;
 		} catch(Exception $e) { return null; }
 	}
 	function type() {
-		if($this->msg->photo != '') return 'photo';
-		if($this->msg->video != '') return 'video';
-		if($this->msg->audio != '') return 'audio';
-		if($this->msg->voice != '') return 'voice';
-		if($this->msg->document != '') return 'document';
-		if($this->msg->sticker != '') return 'sticker';
-		if($this->msg->contact != '') return 'contact';
-		if($this->msg->location != '') return 'location';
-		if($this->text != '') return 'text';
-		return 'other';
+		if(@$this->msg->photo != '') return telegram_function_parameters::$type_photo;
+		if(@$this->msg->video != '') return telegram_function_parameters::$type_video;
+		if(@$this->msg->audio != '') return telegram_function_parameters::$type_audio;
+		if(@$this->msg->voice != '') return telegram_function_parameters::$type_voice;
+		if(@$this->msg->document != '') return telegram_function_parameters::$type_document;
+		if(@$this->msg->sticker != '') return telegram_function_parameters::$type_sticker;
+		if(@$this->msg->contact != '') return telegram_function_parameters::$type_contact;
+		if(@$this->msg->location != '') return telegram_function_parameters::$type_location;
+		if(@$this->text != '') return telegram_function_parameters::$type_text;
+		return telegram_function_parameters::$type_other;
 	}
 }
 
@@ -61,20 +64,21 @@ class telegram_trigger_set {
 	private $trigger_any = null;
 	private $triggers_text_command = array();
 	private $triggers_text_intext = array();
+	// non text message based triggers support
 	private $triggers_photo = array();
+	private $triggers_video = array();
+	private $triggers_audio = array();
+	private $triggers_voice = array();
+	private $triggers_document = array();
+	private $triggers_sticker = array();
+	private $triggers_contact = array();
 	private $triggers_location = array();
+	// error trigger support
 	private $trigger_error = null;
 	function __construct($b, $c=null, $st=true) { $this->botname = $b; $this->chatid = $c; $this->singletrigger = $st; if($c!=null) $this->state = new telegram_state($b, $c); }
 	public function register_trigger_any($callback, $state="*") {
 		if(!$this->state->iscurrent($state)) return;
 		$this->trigger_any = $callback;
-	}
-	private function getmessagetype($m) {
-		$t = "unknown";
-		$v = @$m->text; if(isset($v) && ($v != null)) $t = "text";
-		$v = @$m->photo; if(isset($v) && ($v != null)) $t = "photo";
-		$v = @$m->location; if(isset($v) && ($v != null)) $t = "location";
-		return $t;
 	}
 	public function register_trigger_text_command($callback, $names, $count=-1, $state="*") {
 		if(!$this->state->iscurrent($state)) return;
@@ -86,7 +90,7 @@ class telegram_trigger_set {
 	}
 	public function register_trigger_text_intext($callback, $texts, $state="*") {
 		if(!$this->state->iscurrent($state)) return;
-		$type = "text";
+		$type = telegram_function_parameters::$type_text;
 		$evs = array();
 		foreach($texts as $text) array_push($evs, new telegram_event($text, -1));
 		$t = new telegram_trigger($type, $callback, $evs);
@@ -94,14 +98,56 @@ class telegram_trigger_set {
 	}
 	public function register_trigger_photo($callback, $state="*") {
 		if(!$this->state->iscurrent($state)) return;
-		$type = "photo";
+		$type = telegram_function_parameters::$type_photo;
 		$evs = array();
 		$t = new telegram_trigger($type, $callback);
 		array_push($this->triggers_photo, $t);
 	}
+	public function register_trigger_video($callback, $state="*") {
+		if(!$this->state->iscurrent($state)) return;
+		$type = telegram_function_parameters::$type_video;
+		$evs = array();
+		$t = new telegram_trigger($type, $callback);
+		array_push($this->triggers_video, $t);
+	}
+	public function register_trigger_audio($callback, $state="*") {
+		if(!$this->state->iscurrent($state)) return;
+		$type = telegram_function_parameters::$type_audio;
+		$evs = array();
+		$t = new telegram_trigger($type, $callback);
+		array_push($this->triggers_audio, $t);
+	}
+	public function register_trigger_voice($callback, $state="*") {
+		if(!$this->state->iscurrent($state)) return;
+		$type = telegram_function_parameters::$type_voice;
+		$evs = array();
+		$t = new telegram_trigger($type, $callback);
+		array_push($this->triggers_voice, $t);
+	}
+	public function register_trigger_document($callback, $state="*") {
+		if(!$this->state->iscurrent($state)) return;
+		$type = telegram_function_parameters::$type_document;
+		$evs = array();
+		$t = new telegram_trigger($type, $callback);
+		array_push($this->triggers_document, $t);
+	}
+	public function register_trigger_sticker($callback, $state="*") {
+		if(!$this->state->iscurrent($state)) return;
+		$type = telegram_function_parameters::$type_sticker;
+		$evs = array();
+		$t = new telegram_trigger($type, $callback);
+		array_push($this->triggers_sticker, $t);
+	}
+	public function register_trigger_contact($callback, $state="*") {
+		if(!$this->state->iscurrent($state)) return;
+		$type = telegram_function_parameters::$type_contact;
+		$evs = array();
+		$t = new telegram_trigger($type, $callback);
+		array_push($this->triggers_contact, $t);
+	}
 	public function register_trigger_location($callback, $state="*") {
 		if(!$this->state->iscurrent($state)) return;
-		$type = "location";
+		$type = telegram_function_parameters::$type_location;
 		$evs = array();
 		$t = new telegram_trigger($type, $callback);
 		array_push($this->triggers_location, $t);
@@ -112,10 +158,10 @@ class telegram_trigger_set {
 	}
 	public function run($telegrambot, $msg) {
 		global $STATES_ENABLED;
-		$type = $this->getmessagetype($msg);
-		$text = null;
-		if($type == "text") $text = @trim(str_ireplace("@".$this->botname, "", $msg->text));
-		$fullpar = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $msg, $text, [$text]);
+		$fullpar = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $msg);
+		$type = $fullpar->type();
+		$text = null; if($type == telegram_function_parameters::$type_text) $text = @trim(str_ireplace("@".$this->botname, "", $msg->text));
+		$fullpar->set_text($text); $fullpar->set_parameters([$text]);
 		$res = array();
 		// triggering general trigger (one for all)
 		if($this->trigger_any != null) {
@@ -125,7 +171,7 @@ class telegram_trigger_set {
 			if($tmpres) array_push($res, $tmpres);
 			if($this->singletrigger) return $res;
 		}
-		if($type == "text") { // text based triggers
+		if($type == telegram_function_parameters::$type_text) { // text based triggers
 			// checking command strings
 			$textpar = explode(" ", $text);
 			$cmd = array_shift($textpar);
@@ -163,19 +209,19 @@ class telegram_trigger_set {
 			// returning resulting array
 			return $res;
 		}
-		if($type == "photo") { // photo based triggers
+		// support to non text triggers
+		$nontext_triggers = null;
+		if($type == telegram_function_parameters::$type_photo) $nontext_triggers = $this->triggers_photo;
+		if($type == telegram_function_parameters::$type_video) $nontext_triggers = $this->triggers_video;
+		if($type == telegram_function_parameters::$type_audio) $nontext_triggers = $this->triggers_audio;
+		if($type == telegram_function_parameters::$type_voice) $nontext_triggers = $this->triggers_voice;
+		if($type == telegram_function_parameters::$type_document) $nontext_triggers = $this->triggers_document;
+		if($type == telegram_function_parameters::$type_sticker) $nontext_triggers = $this->triggers_sticker;
+		if($type == telegram_function_parameters::$type_contact) $nontext_triggers = $this->triggers_contact;
+		if($type == telegram_function_parameters::$type_location) $nontext_triggers = $this->triggers_location;
+		if($nontext_triggers != null) {
 			$par = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $msg);
-			foreach($this->triggers_photo as $t) {
-				$c = $t->callback();
-				echo "Triggering $c...\n";
-				$tmpres = call_user_func_array($c, [$par]);
-				if($tmpres) array_push($res, $tmpres);
-				if($this->singletrigger) return $res;
-			}
-		}
-		if($type == "location") { // location based triggers
-			$par = new telegram_function_parameters($telegrambot, $this->chatid, $this->state, $msg);
-			foreach($this->triggers_location as $t) {
+			foreach($nontext_triggers as $t) {
 				$c = $t->callback();
 				echo "Triggering $c...\n";
 				$tmpres = call_user_func_array($c, [$par]);

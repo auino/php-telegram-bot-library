@@ -155,22 +155,6 @@ The last `$state` parameter (optional, needed only if state machine functionalit
 Alternatively, you can define a custom string identifying the prefered state.
 More information are given in the [State Machines section](https://github.com/auino/php-telegram-bot-library#state-machines).
 
-It is also possible to associate a trigger to a photo reception:
-
-```
-$ts->register_trigger_photo("trigger_photo", $state);
-```
-
-where the `$state` parameter is optional.
-
-It is also possible to associate a trigger to a photo reception:
-
-```
-$ts->register_trigger_location("trigger_location", $state);
-```
-
-where the `$state` parameter is optional.
-
 Finally, it's possible to register a trigger to use if anything goes wrong:
 
 ```
@@ -185,7 +169,60 @@ More information are given in the [State Machines section](https://github.com/au
 
 If `$singletrigger=true` (see description in the [Instructions section](https://github.com/auino/php-telegram-bot-library#instructions)), accordingly to registration function names, the order of triggering is the following one: trigger_any, trigger_text_command, trigger_text_intext, trigger_error.
 
-##### State Machines #####
+##### Non-Text Triggers #####
+
+Following triggers are currently supported, relatively to non-text messages.
+In general, consider the `$state` parameter optional.
+
+ * Photo trigger:
+
+   ```
+   $ts->register_trigger_photo("trigger_photo", $state);
+   ```
+
+ * Video trigger:
+
+   ```
+   $ts->register_trigger_video("trigger_video", $state);
+   ```
+
+ * Audio trigger:
+
+   ```
+   $ts->register_trigger_audio("trigger_audio", $state);
+   ```
+
+ * Voice trigger:
+
+   ```
+   $ts->register_trigger_voice("trigger_voice", $state);
+   ```
+
+ * Document trigger:
+
+   ```
+   $ts->register_trigger_document("trigger_document", $state);
+   ```
+
+ * Sticker trigger:
+
+   ```
+   $ts->register_trigger_sticker("trigger_sticker", $state);
+   ```
+
+ * Contact trigger:
+
+   ```
+   $ts->register_trigger_contact("trigger_sticker", $state);
+   ```
+
+ * Location trigger:
+
+   ```
+   $ts->register_trigger_location("trigger_location", $state);
+   ```
+
+#### State Machines ####
 
 This library supports automatic states management.
 
@@ -195,7 +232,7 @@ In order to switch state inside of a trigger function, you can use the following
 $p->state()->movetostate($newstate);
 ```
 
-where `$newstate` identifies the new considered state.
+where `$p` identifies the `telegram_function_parameters` object passed to the trigger and `$newstate` identifies the new considered state.
 
 #### Supported Telegram Actions ####
 
