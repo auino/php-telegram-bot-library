@@ -10,7 +10,7 @@ This library allows you to easily set up a PHP based Telegram Bot.
  * Callback based
  * State machines support
  * Transparent text parsing management
- * Non text messages support (i.e. photo, video, location, etc.)
+ * Non-text messages support (i.e. photo, video, location, etc.)
  * Simplified communication through the Telegram protocol (as an extension of [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API))
  * Actions support (i.e. the top "Bot is sending a picture..." notification is implicit)
  * Self-signed SSL certificate support
@@ -305,7 +305,7 @@ It is instead required by the `telegram_triggers_set` constructor.
 $ts = new telegram_trigger_set($botname, $chatid, $singletrigger);
 ```
 
-Relatively to the previous `$ts->register_trigger_command` and `$ts->register_trigger_intext` functions, since we are working to support non text messages (i.e. photos, location, etc.), method names have been respectively changed to `$ts->register_trigger_text_command` and `$ts->register_trigger_text_intext`.
+Relatively to the previous `$ts->register_trigger_command` and `$ts->register_trigger_intext` functions, since we now support non-text messages (i.e. photos, location, etc.), method names have been respectively changed to `$ts->register_trigger_text_command` and `$ts->register_trigger_text_intext`.
 
 ### Sample Bots ###
 
