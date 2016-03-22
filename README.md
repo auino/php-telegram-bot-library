@@ -78,6 +78,18 @@ Instead, `$singletrigger` (optional, equal to `true` or `false`) identifies the 
 Specifically, if `$singletrigger=true`, at most, a single trigger will be called.
 Otherwise, multiple triggers may be called (e.g. it can be useful to support multiple answers for a single received message).
 
+#### State Machines ####
+
+This library supports automatic states management.
+
+In order to switch state inside of a trigger function, you can use the following command:
+
+```
+$p->state()->movetostate($newstate);
+```
+
+where `$p` identifies the `telegram_function_parameters` object passed to the trigger and `$newstate` identifies the new considered state.
+
 #### Triggers ####
 
 It's now possible to set up triggers for specific commands:
@@ -222,29 +234,17 @@ In general, consider the `$state` parameter optional.
    $ts->register_trigger_location("trigger_location", $state);
    ```
 
-#### State Machines ####
-
-This library supports automatic states management.
-
-In order to switch state inside of a trigger function, you can use the following command:
-
-```
-$p->state()->movetostate($newstate);
-```
-
-where `$p` identifies the `telegram_function_parameters` object passed to the trigger and `$newstate` identifies the new considered state.
-
 #### Supported Telegram Actions ####
 
 Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API) and [official Telegram Bot API](https://core.telegram.org/bots/api#sendchataction), following methods are supported:
  * `send_action($to, $action)`
  * `send_message($to, $msg, $id_msg=null, $reply=null, $type=null, $disable_preview=true)`
- * `send_location($to, $lat, $lon, $id_msg=null, $reply=null)`
- * `send_sticker($to, $sticker, $id_msg=null, $reply=null)`
- * `send_video($to, $video, $id_msg=null, $reply=null)`
  * `send_photo($to, $photo, $caption=null, $id_msg=null, $reply=null)`
+ * `send_video($to, $video, $id_msg=null, $reply=null)`
  * `send_audio($to, $audio, $id_msg=null, $reply=null)`
  * `send_document($to, $document, $id_msg=null, $reply=null)`
+ * `send_sticker($to, $sticker, $id_msg=null, $reply=null)`
+ * `send_location($to, $lat, $lon, $id_msg=null, $reply=null)`
 
 Concerning the `send_message` function, accordingly to [formatting options](https://core.telegram.org/bots/api#formatting-options) provided by Telegram API, `"Markdown"` or `"HTML"` values of the `$type` parameter can be provided.
 
@@ -255,7 +255,7 @@ $filename = get_file($file_id, $output_file)
 ```
 
 where `$file_id` is retrieved through `telegram_function_parameters` class methods (see [Triggers Definition](https://github.com/auino/php-telegram-bot-library#triggers-definition) section).
-Returned value is the full `$filename` including file extension (computed by appending the extension to the `$output_file` parameter), `null` is something goes wrong.
+Returned value is the full `$filename` including file extension (computed by appending the extension to the `$output_file` parameter), `null` if something goes wrong.
 
 #### Automated Triggering ####
 
@@ -274,12 +274,14 @@ It is possible to bind it to the new state (different from initial one) by re-in
 
 #### Logging ####
 
-At the end, it's possible to log receive and send events:
+At the end, it's possible to log receive and send events to database:
 
 ```
 @db_log($botname, 'recv', $chatid, 'text', $text, $date);
 @db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
 ```
+
+where the initial `@` character prevents logging errors (i.e. in case of unsupported message types) to (Apache2) `error.log` file.
 
 #### Database Utilities ####
 
