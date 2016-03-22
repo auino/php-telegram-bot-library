@@ -36,7 +36,7 @@ class telegram_function_parameters {
 		if(@$this->msg->sticker != '') return telegram_function_parameters::$type_sticker;
 		if(@$this->msg->contact != '') return telegram_function_parameters::$type_contact;
 		if(@$this->msg->location != '') return telegram_function_parameters::$type_location;
-		if(@$this->text != '') return telegram_function_parameters::$type_text;
+		if(@$this->msg->text != '') return telegram_function_parameters::$type_text;
 		return telegram_function_parameters::$type_other;
 	}
 }
@@ -82,7 +82,7 @@ class telegram_trigger_set {
 	}
 	public function register_trigger_text_command($callback, $names, $count=-1, $state="*") {
 		if(!$this->state->iscurrent($state)) return;
-		$type = "text";
+		$type = telegram_function_parameters::$type_text;
 		$evs = array();
 		foreach($names as $name) array_push($evs, new telegram_event($name, $count));
 		$t = new telegram_trigger($type, $callback, $evs);
