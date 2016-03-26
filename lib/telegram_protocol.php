@@ -133,7 +133,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_video($to, $video, $id_msg=null, $reply=null){
+	public function send_video($to, $video, $caption=null, $id_msg=null, $reply=null){
 		$this->send_action($to, "upload_video");
 		$data = array();
 		$data["chat_id"]=$to;
@@ -143,6 +143,7 @@ class telegram_bot {
 			else $video="@".$video;
 		}
 		$data["video"]=$video;
+		if(isset($caption)) $data["caption"]=$caption;
 		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
 		if(isset($reply)) $data["reply_markup"]=$reply;
 		$response = $this->control_api("/sendVideo", $data);
@@ -182,7 +183,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_document($to, $document, $id_msg=null, $reply=null){
+	public function send_document($to, $document, $caption=null, $id_msg=null, $reply=null){
 		$this->send_action($to, "upload_document");
 		$data = array();
 		$data["chat_id"]=$to;
@@ -192,6 +193,7 @@ class telegram_bot {
 			else $document="@".$document;
 		}
 		$data["document"]=$document;
+		if(isset($caption)) $data["caption"]=$caption;
 		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
 		if(isset($reply)) $data["reply_markup"]=$reply;
 		$response = $this->control_api("/sendDocument", $data);
