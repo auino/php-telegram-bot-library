@@ -13,6 +13,7 @@ This library allows you to easily set up a PHP based Telegram Bot.
  * Non-text messages support (i.e. photo, video, location, etc.)
  * Simplified communication through the Telegram protocol (as an extension of [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API))
  * Actions support (i.e. the top "Bot is sending a picture..." notification is implicit)
+ * Inline mode support (thanks to Daniele)
  * Self-signed SSL certificate support
  * Simplified Log management ([MySQL](http://www.mysql.com) based)
 
@@ -272,6 +273,10 @@ If `$response` is an empty array, nothing has been triggered.
 In case state machine functionality is enabled, if the `run()` function is called more than a single time, it will be bounded to the initial state.
 It is possible to bind it to the new state (different from initial one) by re-instantiating a new trigger_set object and re-registering the callbacks.
 
+#### Inline mode ####
+
+TODO (Add description)
+
 #### Logging ####
 
 At the end, it's possible to log receive and send events to database:
@@ -329,6 +334,16 @@ Considered states are:
  3. `"waiting_for_input"` state, accepting any input from the user, hence registering the message to a local file and entering back to the `"in_chat"` state
 
 Check [sample/writetodev.php](https://github.com/auino/php-telegram-bot-library/blob/master/sample/writetodev.php) file for the commented source code.
+
+#### Inline Bot ####
+
+This is a simple bot supporting inline mode.
+
+TODO (Add description)
+
+Check [sample/inline.php](https://github.com/auino/php-telegram-bot-library/blob/master/sample/inline.php) file for the commented source code.
+
+Acknowledgements: Thanks Daniele for your support and study of Telegram inline mode.
 
 ### Contacts ###
 

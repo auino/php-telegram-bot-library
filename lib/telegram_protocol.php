@@ -7,6 +7,7 @@
  *  - self-signed certificate are now supported
  *  - automatic actions are now sent before sending data (the result is, e.g., the "is sending a picture..." message on top of the Telegram client)
  *  - a get_file($file_id, $output_file) method is implemented, downloading file content from $file_id and storing it to $output_file
+ *  - inline keyboards support (thanks to Daniele's support)
  *
  */
 
@@ -46,6 +47,19 @@ class ForceReply{
 	function __construct($force_reply=TRUE, $selective = FALSE){
 		$this->force_reply=$force_reply;
 		$this->selective=$selective;
+	}
+}
+
+class InlineKeyboardMarkup{
+	public $inline_keyboard;
+
+	function __construct(){
+		$this->inline_keyboard=array();
+		$this->inline_keyboard[0]=array();
+	}
+
+	public function add_option($option){
+		$this->inline_keyboard = $option;
 	}
 }
 
@@ -197,6 +211,16 @@ class telegram_bot {
 		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
 		if(isset($reply)) $data["reply_markup"]=$reply;
 		$response = $this->control_api("/sendDocument", $data);
+		return $response;
+	}
+
+	public function send_inline($inline_query_id, $results, $cache_time=null, $is_personal=null){
+		$data = array();
+		$data["inline_query_id"]=$inline_query_id;
+		$data["results"]=$results;
+		if(isset($cache_time)) $data["cache_time"]=$cache_time;
+		if(isset($is_personal)) $data["is_personal"]=$is_personal;
+		$response = $this->control_api("/answerInlineQuery", $data);
 		return $response;
 	}
 
