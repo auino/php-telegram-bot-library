@@ -13,7 +13,7 @@ This library allows you to easily set up a PHP based Telegram Bot.
  * Non-text messages support (i.e. photo, video, location, etc.)
  * Simplified communication through the Telegram protocol (as an extension of [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API))
  * Actions support (i.e. the top "Bot is sending a picture..." notification is implicit)
- * Inline mode support (thanks Daniele for your support and study of Telegram inline mode)
+ * Inline mode support (thanks Daniele for your support)
  * Self-signed SSL certificate support
  * Simplified Log management ([MySQL](http://www.mysql.com) based)
 
