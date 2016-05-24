@@ -66,7 +66,7 @@ $inline_query = $data->inline_query;
 $inline_query_id = $inline_query->id;
 
 // managing inline query results
-if ($inline_query_id != "") {
+if($inline_query_id != "") {
 	// getting additional inline data
 	$inline_query_msg = $inline_query->query;
 	$inline_chatid = $inline_query->from->id;

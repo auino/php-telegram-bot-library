@@ -294,7 +294,7 @@ Therefore, in order to support inline mode, it's possible to set up an `if` stat
 
 ```php
 // managing inline query results
-if ($inline_query_id != "") {
+if($inline_query_id != "") {
 	// inline data management
 	// ...
 	exit();
