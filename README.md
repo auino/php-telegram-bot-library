@@ -22,7 +22,7 @@ This library allows you to easily set up a PHP based Telegram Bot.
  1. Create a new Telegram bot by contacting [@BotFather](http://telegram.me/botfather) and following [official Telegram instructions](https://core.telegram.org/bots#botfather)
  2. Clone the repository on your server:
 
-    ```
+    ```sh
     git clone https://github.com/auino/php-telegram-bot-library.git
     ```
 
@@ -46,13 +46,13 @@ Then, the `lib` directory (as configured after installation, see `lib/config.php
 
 Assuming that, the first step is to include the library: this is possible through a single simple command:
 
-```
+```php
 require("lib/telegram.php");
 ```
 
 Hence, it is needed to instantiate a new bot:
 
-```
+```php
 $bot = new telegram_bot($token);
 ```
 
@@ -60,7 +60,7 @@ where `$token` is the Telegram token of your bot.
 
 Accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API), it's possible to get received data through the `$bot` object:
 
-```
+```php
 $data = $bot->read_post_message();
 $message = $data->message;
 $date = $message->date;
@@ -70,7 +70,7 @@ $text = $message->text;
 
 The next step is to instantiate a new trigger set:
 
-```
+```php
 $ts = new telegram_trigger_set($botname, $chatid, $singletrigger);
 ```
 
@@ -85,7 +85,7 @@ This library supports automatic states management.
 
 In order to switch state inside of a trigger function, you can use the following command:
 
-```
+```php
 $p->state()->movetostate($newstate);
 ```
 
@@ -95,7 +95,7 @@ where `$p` identifies the `telegram_function_parameters` object passed to the tr
 
 It's now possible to set up triggers for specific commands:
 
-```
+```php
 $ts->register_trigger_text_command("trigger_welcome", ["/start","/welcome","/hi"], 0, $state);
 ```
 
@@ -113,7 +113,7 @@ More information are given in the [State Machines section](https://github.com/au
 
 At this point, it is assumed that a `trigger_welcome` function is defined:
 
-```
+```php
 // function declaration
 function trigger_welcome($p) {
 	// the reply string
@@ -144,7 +144,7 @@ This bot would simply respond `/start`, `/welcome`, and `/hi` messages with a si
 
 Similarly, it's possible to register a trigger to use when a message includes specific text (case insensitive check):
 
-```
+```php
 $ts->register_trigger_text_intext("trigger_hello", ["hello"], $state);
 ```
 
@@ -158,7 +158,7 @@ More information are given in the [State Machines section](https://github.com/au
 
 Also, it's possible to register a single generic trigger to use for each received command:
 
-```
+```php
 $ts->register_trigger_any("one_trigger_for_all", $state);
 ```
 
@@ -170,7 +170,7 @@ More information are given in the [State Machines section](https://github.com/au
 
 Finally, it's possible to register a trigger to use if anything goes wrong:
 
-```
+```php
 $ts->register_trigger_error("trigger_err", $state);
 ```
 
@@ -189,49 +189,49 @@ In general, consider the `$state` parameter optional.
 
  * Photo trigger:
 
-   ```
+   ```php
    $ts->register_trigger_photo("trigger_photo", $state);
    ```
 
  * Video trigger:
 
-   ```
+   ```php
    $ts->register_trigger_video("trigger_video", $state);
    ```
 
  * Audio trigger:
 
-   ```
+   ```php
    $ts->register_trigger_audio("trigger_audio", $state);
    ```
 
  * Voice trigger:
 
-   ```
+   ```php
    $ts->register_trigger_voice("trigger_voice", $state);
    ```
 
  * Document trigger:
 
-   ```
+   ```php
    $ts->register_trigger_document("trigger_document", $state);
    ```
 
  * Sticker trigger:
 
-   ```
+   ```php
    $ts->register_trigger_sticker("trigger_sticker", $state);
    ```
 
  * Contact trigger:
 
-   ```
+   ```php
    $ts->register_trigger_contact("trigger_sticker", $state);
    ```
 
  * Location trigger:
 
-   ```
+   ```php
    $ts->register_trigger_location("trigger_location", $state);
    ```
 
@@ -251,7 +251,7 @@ Concerning the `send_message` function, accordingly to [formatting options](http
 
 It is also possible to retrive a file from `$file_id` and store it to `$output_file` through the following function:
 
-```
+```php
 $filename = get_file($file_id, $output_file)
 ```
 
@@ -275,48 +275,51 @@ It is possible to bind it to the new state (different from initial one) by re-in
 
 #### Inline mode ####
 
-This library supports [Telegram inline bots mode](https://core.telegram.org/bots/inline).
+This library supports [Telegram inline bots mode](https://core.telegram.org/bots/inline) defined in [official Telegram API](https://core.telegram.org/bots/api#inline-mode).
 
 In order to support inline mode, you have first to enable it by contacting [@BotFather](http://telegram.me/botfather).
 
 Hence, you have to implement inline support in your main PHP script: first of all, you have to retrieve an `$inline_query` object and relative identifier.
 
 ```php
+// reading inline query basic data
 $inline_query = $data->inline_query;
 $inline_query_id = $inline_query->id;
 ```
 
+In case inline mode is used, we expect `$inline_query_id != ""`.
+Otherwise, the standard/common messaging method is used.
+
+Therefore, in order to support inline mode, it's possible to set up an `if` statement such as the following one.
+
+```php
 // managing inline query results
 if ($inline_query_id != "") {
-	// getting additional inline data
-	$inline_query_msg = $inline_query->query;
-	$inline_chatid = $inline_query->from->id;
-	$inline_username = $inline_query->from->username;
-	// building a list of results (of type 'article'); for further information, see https://core.telegram.org/bots/api#inlinequeryresult
-	$results = array();
-	for($i=1;$i<=$results_count;$i++) {
-		$title = "Title of result #$i"; // inline title
-		$description = "Description of inline results #$i"; // inline description
-		$message_text = "Thanks for your query '$inline_query_msg'. You have selected results #$i."; // returned message, if this result is chosen by the user
-		$url = "http://dummyimage.com/100x100/".($inline_thumbs_colors[$i%count($inline_thumbs_colors)])."/000.png&text=$i"; // thumbnail url; using the external dummyimage.com service
-		array_push($results, Array("type" => "article", "id" => "id_$i", "title" => $title, "description" => $description, "message_text" => $message_text, "parse_mode" => "HTML", "thumb_url" => $url));
-	}
-	// sending the results
-	$results = json_encode($results);
-	$bot->send_inline($inline_query_id, $results); // for further information, see https://core.telegram.org/bots/api#inline-mode
-	// logging sent results into database
-	@db_log($botname, 'inline', $inline_query_id, 'inline', $date);
-	// terminating the program
+	// inline data management
+	// ...
 	exit();
 }
+```
 
+It's possible to obtain inline query data as a InlineQuery object defined in the [official Telegram API](https://core.telegram.org/bots/api#inlinequery).
+Results shown to the user are represented as an array of InlineQueryResult objects (see [official Telegram API](https://core.telegram.org/bots/api#inlinequeryresult)).
 
+Finally it's possible to send inline content to the user:
+
+```php
+$results = json_encode($results_array);
+$bot->send_inline($inline_query_id, $results);
+// logging sent results into database
+@db_log($botname, 'inline', $inline_query_id, 'inline', $date);
+```
+
+For a sample of usage of inline mode, see the [Inline Bot sample](https://github.com/auino/php-telegram-bot-library#inline-bot) below.
 
 #### Logging ####
 
 At the end, it's possible to log receive and send events to database:
 
-```
+```php
 @db_log($botname, 'recv', $chatid, 'text', $text, $date);
 @db_log($botname, 'sent', $chatid, $response['type'], $response['content'], $date);
 ```
@@ -337,13 +340,13 @@ Following functions are available on the configured database:
 Unlike previous versions of the library, the `$chatid` parameter is no more required in the `$ts->run()` function.
 Moreover, the `$text` parameter is replaced by a `$message` parameter, retrieved through `$data->message` (see [Instructions section](https://github.com/auino/php-telegram-bot-library#instructions)).
 
-```
+```php
 $response = $ts->run($bot, $message);
 ```
 
 It is instead required by the `telegram_triggers_set` constructor.
 
-```
+```php
 $ts = new telegram_trigger_set($botname, $chatid, $singletrigger);
 ```
 
