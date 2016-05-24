@@ -262,7 +262,7 @@ Returned value is the full `$filename` including file extension (computed by app
 
 After the triggers have been configured (it's possible to set up multiple triggers/callbacks: in case of multiple triggers associated to the same message/text, each callback is triggered), the triggering process have to be executed:
 
-```
+```php
 $response = $ts->run($bot, $message);
 ```
 
@@ -275,7 +275,42 @@ It is possible to bind it to the new state (different from initial one) by re-in
 
 #### Inline mode ####
 
-TODO (Add description)
+This library supports [Telegram inline bots mode](https://core.telegram.org/bots/inline).
+
+In order to support inline mode, you have first to enable it by contacting [@BotFather](http://telegram.me/botfather).
+
+Hence, you have to implement inline support in your main PHP script: first of all, you have to retrieve an `$inline_query` object and relative identifier.
+
+```php
+$inline_query = $data->inline_query;
+$inline_query_id = $inline_query->id;
+```
+
+// managing inline query results
+if ($inline_query_id != "") {
+	// getting additional inline data
+	$inline_query_msg = $inline_query->query;
+	$inline_chatid = $inline_query->from->id;
+	$inline_username = $inline_query->from->username;
+	// building a list of results (of type 'article'); for further information, see https://core.telegram.org/bots/api#inlinequeryresult
+	$results = array();
+	for($i=1;$i<=$results_count;$i++) {
+		$title = "Title of result #$i"; // inline title
+		$description = "Description of inline results #$i"; // inline description
+		$message_text = "Thanks for your query '$inline_query_msg'. You have selected results #$i."; // returned message, if this result is chosen by the user
+		$url = "http://dummyimage.com/100x100/".($inline_thumbs_colors[$i%count($inline_thumbs_colors)])."/000.png&text=$i"; // thumbnail url; using the external dummyimage.com service
+		array_push($results, Array("type" => "article", "id" => "id_$i", "title" => $title, "description" => $description, "message_text" => $message_text, "parse_mode" => "HTML", "thumb_url" => $url));
+	}
+	// sending the results
+	$results = json_encode($results);
+	$bot->send_inline($inline_query_id, $results); // for further information, see https://core.telegram.org/bots/api#inline-mode
+	// logging sent results into database
+	@db_log($botname, 'inline', $inline_query_id, 'inline', $date);
+	// terminating the program
+	exit();
+}
+
+
 
 #### Logging ####
 
@@ -339,11 +374,22 @@ Check [sample/writetodev.php](https://github.com/auino/php-telegram-bot-library/
 
 This is a simple bot supporting inline mode.
 
-TODO (Add description)
+When using the bot in inline mode, it will provide three possible choices/results.
+After the choice is accomplished, the bot will send a customized message to the user.
 
 Check [sample/inline.php](https://github.com/auino/php-telegram-bot-library/blob/master/sample/inline.php) file for the commented source code.
 
 Acknowledgements: Thanks Daniele for your support and study of Telegram inline mode.
+
+### Real bots ###
+
+Following bots have been implemented through this library.
+
+* [@programmablebot](https://telegram.me/programmablebot)
+* [@tabbythebot](https://telegram.me/tabbythebot)
+* [@italiawebcambot](https://telegram.me/italiawebcambot)
+
+Contact me to add your bot to the list.
 
 ### Contacts ###
 
