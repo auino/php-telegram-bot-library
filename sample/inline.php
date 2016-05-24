@@ -83,7 +83,8 @@ if($inline_query_id != "") {
 	}
 	// sending the results
 	$results = json_encode($results);
-	$bot->send_inline($inline_query_id, $results); // for further information, see https://core.telegram.org/bots/api#inline-mode
+	$cache_time = 300; // indicates how many seconds the content has to be kept in Telegram's servers cache (useful if many users require a content with the same identifier); use 0 or null for dynamic (never cached) elements
+	$bot->send_inline($inline_query_id, $results, $cache_time); // for further information, see https://core.telegram.org/bots/api#inline-mode
 	// logging sent results into database
 	@db_log($botname, 'inline', $inline_query_id, 'inline', $date);
 	// terminating the program
