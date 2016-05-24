@@ -380,7 +380,7 @@ After the choice is accomplished, the bot will send a customized message to the 
 
 Check [sample/inline.php](https://github.com/auino/php-telegram-bot-library/blob/master/sample/inline.php) file for the commented source code.
 
-Acknowledgements: Thanks Daniele for your support and study of Telegram inline mode.
+Acknowledgements: Thanks Daniele for your support and study of [Telegram inline mode](https://core.telegram.org/bots/inline).
 
 ### Real bots ###
 
