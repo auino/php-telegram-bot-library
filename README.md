@@ -385,10 +385,13 @@ Check [sample/inline.php](https://github.com/auino/php-telegram-bot-library/blob
 Following bots have been implemented through this library.
 
 * [@programmablebot](https://telegram.me/programmablebot)
-* [@tabbythebot](https://telegram.me/tabbythebot)
 * [@italiawebcambot](https://telegram.me/italiawebcambot)
 
-Contact me to add your bot to the list.
+Information about other bots are available on the following channels.
+
+* [@tabbythebot](https://telegram.me/tabbythebot)
+
+Contact me to add your bot/channel to the list.
 
 ### Acknowledgements ###
 
