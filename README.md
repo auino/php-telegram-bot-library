@@ -309,8 +309,6 @@ Finally it's possible to send inline content to the user:
 ```php
 $results = json_encode($results_array);
 $bot->send_inline($inline_query_id, $results);
-// logging sent results into database
-@db_log($botname, 'inline', $inline_query_id, 'inline', $date);
 ```
 
 For a sample of usage of inline mode, see the [Inline Bot sample](https://github.com/auino/php-telegram-bot-library#inline-bot) below.
