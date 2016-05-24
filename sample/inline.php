@@ -74,11 +74,12 @@ if($inline_query_id != "") {
 	// building a list of results (of type 'article'); for further information, see https://core.telegram.org/bots/api#inlinequeryresult
 	$results = array();
 	for($i=1;$i<=$results_count;$i++) {
+		$id = "id_$i"; // unique identifier of the content
 		$title = "Title of result #$i"; // inline title
 		$description = "Description of inline results #$i"; // inline description
 		$message_text = "Thanks for your query '$inline_query_msg'. You have selected results #$i."; // returned message, if this result is chosen by the user
 		$url = "http://dummyimage.com/100x100/".($inline_thumbs_colors[$i%count($inline_thumbs_colors)])."/000.png&text=$i"; // thumbnail url; using the external dummyimage.com service
-		array_push($results, Array("type" => "article", "id" => "id_$i", "title" => $title, "description" => $description, "message_text" => $message_text, "parse_mode" => "HTML", "thumb_url" => $url));
+		array_push($results, Array("type" => "article", "id" => "$id", "title" => $title, "description" => $description, "message_text" => $message_text, "parse_mode" => "HTML", "thumb_url" => $url)); // for other content types, see https://core.telegram.org/bots/api#inlinequeryresult
 	}
 	// sending the results
 	$results = json_encode($results);
