@@ -197,6 +197,22 @@ class telegram_bot {
 		return $response;
 	}
 
+	public function send_voice($to, $voice, $id_msg=null, $reply=null){
+		$this->send_action($to, "upload_audio");
+		$data = array();
+		$data["chat_id"]=$to;
+		if(substr($voice,0,1)=="@") $audio=substr($voice,1); // support for "@$filename"
+		if(file_exists($voice)) {
+			if(class_exists('CurlFile', false)) $voice=new CURLFile(realpath($voice));
+			else $voice="@".$voice;
+		}
+		$data["voice"]=$voice;
+		if(isset($id_msg)) $data["reply_to_message_id"]=$id_msg;
+		if(isset($reply)) $data["reply_markup"]=$reply;
+		$response = $this->control_api("/sendVoice", $data);
+		return $response;
+	}
+
 	public function send_document($to, $document, $caption=null, $id_msg=null, $reply=null){
 		$this->send_action($to, "upload_document");
 		$data = array();

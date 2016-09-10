@@ -243,6 +243,7 @@ Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-AP
  * `send_photo($to, $photo, $caption=null, $id_msg=null, $reply=null)`
  * `send_video($to, $video, $caption=null, $id_msg=null, $reply=null)`
  * `send_audio($to, $audio, $id_msg=null, $reply=null)`
+ * `send_voice($to, $voice, $id_msg=null, $reply=null)`
  * `send_document($to, $document, $caption=null, $id_msg=null, $reply=null)`
  * `send_sticker($to, $sticker, $id_msg=null, $reply=null)`
  * `send_location($to, $lat, $lon, $id_msg=null, $reply=null)`
