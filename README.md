@@ -396,9 +396,9 @@ Contact me to add your bot/channel to the list.
 
 ### Acknowledgements ###
 
-Thanks Daniele for your support and study of [Telegram inline mode](https://core.telegram.org/bots/inline).
-
-Thanks [CheatCoder](https://github.com/CheatCoder) for your suggestions concerning mysqli.
+* Thanks Daniele for your support and study of [Telegram inline mode](https://core.telegram.org/bots/inline).
+* Thanks [ByteRam](https://github.com/ByteRam) for send_voice suggestion
+* Thanks [CheatCoder](https://github.com/CheatCoder) for your suggestions concerning mysqli.
 
 ### Contacts ###
 
