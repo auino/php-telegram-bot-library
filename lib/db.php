@@ -1,6 +1,6 @@
 <?php
 function db_connect() {
-	global $DB_PORT, $DB_HOST, $DB_USER, $DB_PWD, $DB_USEOLDLIB;
+	global $DB_PORT, $DB_HOST, $DB_USER, $DB_PWD, $DB_NAME, $DB_USEOLDLIB;
 	$conn = null;
 	if($DB_USEOLDLIB) $conn = mysql_connect("$DB_HOST:$DB_PORT", $DB_USER, $DB_PWD);
 	else $conn = mysqli_connect($DB_HOST, $DB_USER, $DB_PWD, $DB_NAME);
@@ -23,7 +23,7 @@ function db_nonquery($q) {
 		$retval = mysql_query($q, $conn);
 	}
 	else {
-		$retval = mysqli_query($conn, $q);
+		$retval = $conn->query($q);
 	}
 	db_close($conn);
 	return $retval;
@@ -39,7 +39,7 @@ function db_query($q) {
 		$retval = mysql_query($q, $conn);
 	}
 	else {
-		$retval = mysqli_query($conn, $q);
+		$retval = $conn->query($q);
 	}
 	if(!$retval) return false;
 	$res = array(); // this may not be needed, since $retval already is an array
