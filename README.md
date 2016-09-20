@@ -398,6 +398,8 @@ Contact me to add your bot/channel to the list.
 
 Thanks Daniele for your support and study of [Telegram inline mode](https://core.telegram.org/bots/inline).
 
+Thanks [CheatCoder](https://github.com/CheatCoder) for your suggestions concerning mysqli.
+
 ### Contacts ###
 
 You can find me on Twitter as [@auino](https://twitter.com/auino).
