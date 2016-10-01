@@ -16,6 +16,7 @@ This library allows you to easily set up a PHP based Telegram Bot.
  * Inline mode support (thanks Daniele for your support)
  * Self-signed SSL certificate support
  * Simplified Log management ([MySQL](http://www.mysql.com) based)
+ * Support to programmed messages send (both broadcast or targeted to a specific chat)
 
 ### Installation ###
 
@@ -334,6 +335,32 @@ Following functions are available on the configured database:
  * `db_query($query)` to run a query (i.e. `SELECT`) on the database (connection and closure are automatically executed); returns an array of records
  * `db_randomone($table, $filter=null)`: this function is useful on non performant devices (i.e. a single-core Raspberry PI) to get a single random element from a `$table` without using the SQL `RAND()` function, loading results in memory; `$filter` may be, e.g., equal to `Orders.total > 1000`; returns the pointer to the results of the query
 
+### Programmed messages send ###
+
+This library allows the programmer to send targeted messages to specific users or broadcast messages to all registered users.
+
+This is possible by opening from a browser the `send.php` file and specifying the following `GET` parameters:
+ * `chatid` representing the chat identifier of the recipient
+ * `message` representing the message to send to the recipient (only text messages are supported, at least for now)
+If the `chatid` parameter is empty, the message will be sent to each user.
+
+This functionality makes use of the logging capabilities of the library.
+Therefore, if [logging](https://github.com/auino/php-telegram-bot-library#logging) is not enabled/supported, programmed message send will not work.
+
+#### Usage sample ####
+
+Usage sample is reported in the following.
+
+```
+send.php?chatid=$value&message=Hello%20world!
+```
+
+Please consider that the `message` parameter should be [urlencoded](http://php.net/manual/en/function.urlencode.php).
+
+#### Remarks ####
+
+This functionality has not been tested deeply: please report any [issue](https://github.com/auino/php-telegram-bot-library/issues) and propose solutions.
+
 ### Notes for who's upgrading ###
 
 Unlike previous versions of the library, the `$chatid` parameter is no more required in the `$ts->run()` function.
@@ -387,18 +414,15 @@ Following bots have been implemented through this library.
 
 * [@programmablebot](https://telegram.me/programmablebot)
 * [@italiawebcambot](https://telegram.me/italiawebcambot)
-
-Information about other bots are available on the following channels.
-
-* [@tabbythebot](https://telegram.me/tabbythebot)
+* [@tabbythebot](https://telegram.me/tabbythebot) (channel reporting Daniele's bots; see [acknowledgements](https://github.com/auino/php-telegram-bot-library#acknowledgements))
 
 Contact me to add your bot/channel to the list.
 
 ### Acknowledgements ###
 
 * Thanks Daniele for your support and study of [Telegram inline mode](https://core.telegram.org/bots/inline).
-* Thanks [ByteRam](https://github.com/ByteRam) for send_voice suggestion
-* Thanks [CheatCoder](https://github.com/CheatCoder) for your suggestions concerning mysqli.
+* Thanks [ByteRam](https://github.com/ByteRam) for `send_voice` suggestion
+* Thanks [CheatCoder](https://github.com/CheatCoder) for your suggestions concerning `mysqli` library.
 
 ### Contacts ###
 
