@@ -337,7 +337,7 @@ Following functions are available on the configured database:
 
 ### Programmed messages send ###
 
-This library allows the programmer to send targeted messages to specific users or broadcast messages to all registered users.
+This library allows the programmer to send targeted messages to specific users or broadcast messages to all registered users (useful, for instance, when coupled with `cron`).
 
 This is possible by opening from a browser the `send.php` file and specifying the following `GET` parameters:
  * `chatid` representing the chat identifier of the recipient
