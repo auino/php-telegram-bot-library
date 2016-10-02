@@ -344,10 +344,14 @@ This is possible by opening from a browser the `send.php` file and specifying th
  * `message` representing the message to send to the recipient (only text messages are supported, at least for now)
 If the `chatid` parameter is empty, the message will be sent to each user.
 
-Access to `send.php` file should be protected, e.g., through authentication.
+Access to `send.php` file should be protected, e.g., through basic authentication (see [Apache2 help on ServerFault](http://serverfault.com/a/151305)).
 
 This functionality makes use of the logging capabilities of the library.
 Therefore, if [logging](https://github.com/auino/php-telegram-bot-library#logging) is not enabled/supported, programmed message send will not work.
+
+#### Retrieve chat identifier ####
+
+It could be done through a simple trigger, or by looking at the `Logs` table in the database.
 
 #### Usage sample ####
 
@@ -358,10 +362,6 @@ send.php?chatid=$value&message=Hello%20world!
 ```
 
 Please consider that the `message` parameter should be [urlencoded](http://php.net/manual/en/function.urlencode.php).
-
-#### Remarks ####
-
-This functionality has not been tested deeply yet: please report any [issue](https://github.com/auino/php-telegram-bot-library/issues) and propose solutions.
 
 ### Notes for who's upgrading ###
 
