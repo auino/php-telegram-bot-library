@@ -12,10 +12,7 @@ $TELEGRAM_TOKEN = "...";
 $STATUS_ENABLE = false;
 
 // checking input parameters
-if(!isset($_GET['message'])) {
-	echo "Please specify a message to send."
-	exit();
-}
+if(!isset($_GET['message'])) exit("Please specify a message to send.");
 
 // getting input parameters
 $chatid = null; // send message to all registered chats
@@ -23,10 +20,7 @@ if(isset($_GET['chatid'])) $chatid = $_GET['chatid'];
 $message = $_GET['message'];
 
 // checking if logs are enabled (see https://github.com/auino/php-telegram-bot-library for more information)
-if(!LOGS_ENABLED) {
-	echo "Logs are not enabled for this bot."
-	exit();
-}
+if(!LOGS_ENABLED) exit("Logs are not enabled for this bot.");
 
 // creating the bot object
 $bot = new telegram_bot($TELEGRAM_TOKEN);
@@ -39,14 +33,16 @@ try {
 	// iterating over the chat list
 	foreach($chatlist as $chat) {
 		// getting current date
-		$date = (string)time()
+		$date = (string)time();
 		// sending the message
 		$r = $bot()->send_message($chat, $message);
 		// log sent message on the database
 		@db_log($TELEGRAM_BOTNAME, 'sent', $chat, 'text', $message, $date);
 	}
+	echo "Message(s) sent!";
 }
 catch(Exception $e) {
 	@db_log($TELEGRAM_BOTNAME, 'error', $chatid, 'Error', $date);
+	echo "Error: $e";
 }
 ?>
