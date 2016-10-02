@@ -344,6 +344,8 @@ This is possible by opening from a browser the `send.php` file and specifying th
  * `message` representing the message to send to the recipient (only text messages are supported, at least for now)
 If the `chatid` parameter is empty, the message will be sent to each user.
 
+Access to `send.php` file should be protected, e.g., through authentication.
+
 This functionality makes use of the logging capabilities of the library.
 Therefore, if [logging](https://github.com/auino/php-telegram-bot-library#logging) is not enabled/supported, programmed message send will not work.
 
@@ -359,7 +361,7 @@ Please consider that the `message` parameter should be [urlencoded](http://php.n
 
 #### Remarks ####
 
-This functionality has not been tested deeply: please report any [issue](https://github.com/auino/php-telegram-bot-library/issues) and propose solutions.
+This functionality has not been tested deeply yet: please report any [issue](https://github.com/auino/php-telegram-bot-library/issues) and propose solutions.
 
 ### Notes for who's upgrading ###
 
