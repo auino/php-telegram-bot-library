@@ -41,7 +41,7 @@ try {
 		// getting current date
 		$date = (string)time();
 		// sending the message
-		$r = $bot()->send_message($chat, $message);
+		$r = $bot->send_message($chat, $message);
 		// log sent message on the database
 		@db_log($TELEGRAM_BOTNAME, 'sent', $chat, 'text', $message, $date);
 	}
