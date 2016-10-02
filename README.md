@@ -15,7 +15,7 @@ This library allows you to easily set up a PHP based Telegram Bot.
  * Actions support (i.e. the top "Bot is sending a picture..." notification is implicit)
  * Inline mode support (thanks Daniele for your support)
  * Self-signed SSL certificate support
- * Simplified Log management ([MySQL](http://www.mysql.com) based)
+ * Simplified log management ([MySQL](http://www.mysql.com) based)
  * Support to programmed messages send (both broadcast or targeted to a specific chat)
 
 ### Installation ###
