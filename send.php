@@ -45,10 +45,12 @@ try {
 		// log sent message on the database
 		@db_log($TELEGRAM_BOTNAME, 'sent', $chat, 'text', $message, $date);
 	}
+	// printing output
 	echo "Message(s) sent!";
 }
 catch(Exception $e) {
 	@db_log($TELEGRAM_BOTNAME, 'error', $chatid, 'Error', $date);
+	// printing the error
 	echo "Error: $e";
 }
 ?>
