@@ -351,7 +351,24 @@ Therefore, if [logging](https://github.com/auino/php-telegram-bot-library#loggin
 
 #### Retrieve chat identifier ####
 
-It could be done through a simple trigger, or by looking at the `Logs` table in the database.
+It could be done, for instance, by looking at the `Logs` table in the database.
+
+Otherwise, it is possible to create a simple trigger, as reported in the following sample code.
+
+```php
+// trigger registration
+$ts->register_trigger_text_command("trigger_chatid", ["/chatid"], 0);
+
+// callback definition
+function trigger_chatid($p) {
+	try {
+		$answer = "Your chat identifier is ".$p->chatid();
+		$p->bot()->send_message($p->chatid(), $answer);
+		return logarray("text", $answer);
+	}
+	catch(Exception $e) { return false; }
+}
+```
 
 #### Usage sample ####
 
