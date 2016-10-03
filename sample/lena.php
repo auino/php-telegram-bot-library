@@ -35,7 +35,7 @@ function trigger_photo($p) {
         $pic = "lena.jpg";
         $caption = "Look at Lena's picture!";
         $p->bot()->send_photo($p->chatid(), "$pic", $caption);
-        return logarray("photo", "[$pic] $caption"); // you choose the format you prefer
+        return logarray('photo', "[$pic] $caption"); // you choose the format you prefer
     }
     catch(Exception $e) { return false; }
 }
