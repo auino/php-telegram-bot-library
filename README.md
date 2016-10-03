@@ -66,7 +66,7 @@ $data = $bot->read_post_message();
 $message = $data->message;
 $date = $message->date;
 $chatid = $message->chat->id;
-$text = $message->text;
+$text = @$message->text;
 ```
 
 The next step is to instantiate a new trigger set:
