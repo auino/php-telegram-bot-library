@@ -19,7 +19,7 @@ $LOGSDBQUERIES = [
 
 // if needed, enable $STATES_ENABLED in lib/config.php
 $STATESDBQUERIES = [
-	"CREATE TABLE `States` (`id` bigint(20) NOT NULL AUTO_INCREMENT, `bot` varchar(100) NOT NULL, `chat` int(11) NOT NULL, `state` varchar(100) DEFAULT NULL, PRIMARY KEY (`id`), UNIQUE KEY `bot` (`bot`,`chat`));"
+	"CREATE TABLE `States` (`id` bigint(20) NOT NULL AUTO_INCREMENT, `bot` varchar(100) NOT NULL, `chat` int(14) NOT NULL, `state` varchar(100) DEFAULT NULL, PRIMARY KEY (`id`), UNIQUE KEY `bot` (`bot`,`chat`));"
 ];
 
 include_once("lib/telegram.php");
