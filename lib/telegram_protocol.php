@@ -30,12 +30,12 @@ class ReplyKeyboardMarkup{
 	}
 }
 
-class ReplyKeyboardHide{
-	public $hide_keyboard;
+class ReplyKeyboardRemove{
+	public $remove_keyboard;
 	public $selective;
 
-	function __construct($hide_keyboard=TRUE, $selective = FALSE){
-		$this->hide_keyboard=$hide_keyboard;
+	function __construct($remove_keyboard=TRUE, $selective = FALSE){
+		$this->remove_keyboard=$remove_keyboard;
 		$this->selective=$selective;
 	}
 }
