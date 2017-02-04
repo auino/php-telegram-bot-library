@@ -5,6 +5,7 @@
 $DELETEEXISTENTWBHOOK = false;
 $REGISTERWEBHOOK = true;
 $WEBHOOKURL = "https://www.yourwebsite.org/webhook.php";
+$REGISTERSELFSIGNEDCERTIFICATE = true;
 $SSLCERTIFICATEFILENAME = "certificate.pem";
 
 $SETUPDB = true;
@@ -32,13 +33,17 @@ if($DELETEEXISTENTWBHOOK) {
 }
 else { // you can register a new webhook only if you're not deleting existent webhook
 	if($REGISTERWEBHOOK) {
-		echo "Registering webhook...\n";
-		if(class_exists('CurlFile', false)) $SSLCERTIFICATEFILE = new CURLFile(realpath($SSLCERTIFICATEFILENAME));
-		else $SSLCERTIFICATEFILE = "@$SSLCERTIFICATEFILENAME";
+		echo "Registering webhook...\n”;
 		$bot = new telegram_bot($TELEGRAM_TOKEN);
-		//$bot->set_webhook();
-		$bot->set_webhook($WEBHOOKURL, $SSLCERTIFICATEFILE);
-		echo "Registered!\n";
+		if($REGISTERSELFSIGNEDCERTIFICATE) {
+			if(class_exists('CurlFile', false)) $SSLCERTIFICATEFILE = new CURLFile(realpath($SSLCERTIFICATEFILENAME));
+			else $SSLCERTIFICATEFILE = "@$SSLCERTIFICATEFILENAME";
+			$bot->set_webhook($WEBHOOKURL, $SSLCERTIFICATEFILE);
+		}
+		else { // no custom SSL certificate file (valid certificate)
+			$bot->set_webhook($WEBHOOKURL);
+		}
+                echo "Registered!\n";
 	}
 }
 

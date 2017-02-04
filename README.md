@@ -42,6 +42,8 @@ For manual webhook registration from command line, use the following command (e.
 curl -F "url=$WEBHOOKURL" -F "certificate=$SSLCERTIFICATEFILE" https://api.telegram.org/bot$T/setWebhook
 ```
 
+If you have an already valid SSL certificate, ignore the `$SSLCERTIFICATEFILE` parameter and set `$REGISTERSELFSIGNEDCERTIFICATE = false`.
+
 If you need to delete the registed webhook, you can set `$DELETEEXISTENTWBHOOK = true` inside of the `install.php` file and run it.
 
 ### Instructions ###
