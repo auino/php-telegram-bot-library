@@ -258,7 +258,7 @@ Relatively to messages sending instructions, accordingly to [gorebrau/PHP-telegr
 
 Concerning the `send_message` function, accordingly to [formatting options](https://core.telegram.org/bots/api#formatting-options) provided by Telegram API, `"Markdown"` or `"HTML"` values of the `$type` parameter can be provided.
 
-Moreover, accordingly to [official Telegram Bot API regarding messages updates](https://core.telegram.org/bots/api#updating-messages), following methods are instead supported:
+Moreover, accordingly to [official Telegram Bot API regarding messages updates](https://core.telegram.org/bots/api#updating-messages), following methods are also supported:
  * `edit_message($chatid=null, $message_id=null, $text, $inline_message_id=null, $parse_mode=null, $disable_web_page_preview=null, $reply_markup=null)`
  * `edit_caption($chatid=null, $message_id=null, $inline_message_id=null, $caption=null, $reply_markup=null)`
  * `edit_replymarkup($chatid=null, $message_id=null, $inline_message_id=null, $reply_markup=null)`
