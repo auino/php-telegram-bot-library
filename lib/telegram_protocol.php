@@ -66,7 +66,7 @@ class InlineKeyboardMarkup{
 class telegram_bot {
 	private $token;
 
-	private function open_url($url, $method="GET", $data=null){
+	private function open_url($url, $method="GET", $data=null) {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		if($method==="POST") {
@@ -81,27 +81,27 @@ class telegram_bot {
 		return $this->open_url("https://api.telegram.org/file/bot$token/$file_path");
 	}
 
-	private function control_api($action, $data=NULL){
+	private function control_api($action, $data=NULL) {
 		$token = $this->token;
 		$response = json_decode($this->open_url("https://api.telegram.org/bot$token$action", "POST", $data));
 		return $response;
 	}
 
-	function __construct($token){
+	function __construct($token) {
 		$this->token=$token;
 	}
 
-	public function status(){
+	public function status() {
 		$response = $this->control_api("/getme");
 		return($response);
 	}
 
-	public function get_updates(){
+	public function get_updates() {
 		$response = $this->control_api("/getUpdates");
 		return($response);
 	}
 
-	public function send_action($to, $action){
+	public function send_action($to, $action) {
 		$data = array();
 		$data["chat_id"]=$to;
 		$data["action"]=$action;
@@ -109,7 +109,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_message($to, $msg, $id_msg=null, $reply=null, $type=null, $disable_preview=true){
+	public function send_message($to, $msg, $id_msg=null, $reply=null, $type=null, $disable_preview=true) {
 		$data = array();
 		$data["chat_id"]=$to;
 		$data["text"]=$msg;
@@ -121,7 +121,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_location($to, $lat, $lon, $id_msg=null, $reply=null){
+	public function send_location($to, $lat, $lon, $id_msg=null, $reply=null) {
 		$data = array();
 		$data["chat_id"]=$to;
 		$data["latitude"]=$lat;
@@ -132,7 +132,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_sticker($to, $sticker, $id_msg=null, $reply=null){
+	public function send_sticker($to, $sticker, $id_msg=null, $reply=null) {
 		$data = array();
 		$data["chat_id"]=$to;
 		if(substr($sticker,0,1)=="@") $sticker=substr($sticker,1); // support for "@$filename"
@@ -147,7 +147,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_video($to, $video, $caption=null, $id_msg=null, $reply=null){
+	public function send_video($to, $video, $caption=null, $id_msg=null, $reply=null) {
 		$this->send_action($to, "upload_video");
 		$data = array();
 		$data["chat_id"]=$to;
@@ -164,7 +164,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_photo($to, $photo, $caption=null, $id_msg=null, $reply=null){
+	public function send_photo($to, $photo, $caption=null, $id_msg=null, $reply=null) {
 		$this->send_action($to, "upload_photo");
 		$data = array();
 		$data["chat_id"]=$to;
@@ -181,7 +181,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_audio($to, $audio, $id_msg=null, $reply=null){
+	public function send_audio($to, $audio, $id_msg=null, $reply=null) {
 		$this->send_action($to, "upload_audio");
 		$data = array();
 		$data["chat_id"]=$to;
@@ -197,7 +197,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_voice($to, $voice, $id_msg=null, $reply=null){
+	public function send_voice($to, $voice, $id_msg=null, $reply=null) {
 		$this->send_action($to, "upload_audio");
 		$data = array();
 		$data["chat_id"]=$to;
@@ -213,7 +213,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_document($to, $document, $caption=null, $id_msg=null, $reply=null){
+	public function send_document($to, $document, $caption=null, $id_msg=null, $reply=null) {
 		$this->send_action($to, "upload_document");
 		$data = array();
 		$data["chat_id"]=$to;
@@ -230,7 +230,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function send_inline($inline_query_id, $results, $cache_time=null, $is_personal=null){
+	public function send_inline($inline_query_id, $results, $cache_time=null, $is_personal=null) {
 		$data = array();
 		$data["inline_query_id"]=$inline_query_id;
 		$data["results"]=$results;
@@ -240,7 +240,41 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function forward_message($to, $from, $msg_id){
+	public function edit_message($chatid=null, $message_id=null, $text, $inline_message_id=null, $parse_mode=null, $disable_web_page_preview=null, $reply_markup=null) {
+		$data = array();
+		$data["text"] = $text;
+		if(isset($chatid)) $data["chat_id"] = $chatid;
+		if(isset($message_id)) $data["message_id"] = $message_id;
+		if(isset($inline_message_id)) $data["inline_message_id"] = $inline_message_id;
+		if(isset($parse_mode)) $data["parse_mode"] = $parse_mode;
+		if(isset($disable_web_page_preview)) $data["disable_web_page_preview"] = $disable_web_page_preview;
+		if(isset($reply_markup)) $data["reply_markup"] = $reply_markup;
+		$response = $this->control_api("/editMessageText", $data);
+		return $response;
+	}
+	
+	public function edit_caption($chatid=null, $message_id=null, $inline_message_id=null, $caption=null, $reply_markup=null) {
+		$data = array();
+		if(isset($chatid)) $data["chat_id"] = $chatid;
+		if(isset($message_id)) $data["message_id"] = $message_id;
+		if(isset($inline_message_id)) $data["inline_message_id"] = $inline_message_id;
+		if(isset($caption)) $data["caption"] = $caption;
+		if(isset($reply_markup)) $data["reply_markup"] = $reply_markup;
+		$response = $this->control_api("/editMessageCaption", $data);
+		return $response;
+	}
+	
+	public function edit_replymarkup($chatid=null, $message_id=null, $inline_message_id=null, $reply_markup=null) {
+		$data = array();
+		if(isset($chatid)) $data["chat_id"] = $chatid;
+		if(isset($message_id)) $data["message_id"] = $message_id;
+		if(isset($inline_message_id)) $data["inline_message_id"] = $inline_message_id;
+		if(isset($reply_markup)) $data["reply_markup"] = $reply_markup;
+		$response = $this->control_api("/editMessageReplyMarkup", $data);
+		return $response;
+	}
+
+	public function forward_message($to, $from, $msg_id) {
 		$data = array();
 		$data["chat_id"]=$to;
 		$data["from_chat_id"]=$from;
@@ -249,7 +283,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function set_webhook($url=null, $certificatefile=null){
+	public function set_webhook($url=null, $certificatefile=null) {
 		$data = array();
 		$data["url"]=$url;
 		if($certificatefile!=null) {
@@ -263,7 +297,7 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function get_user_profile_photos($id_user, $offset=null, $limit=null){
+	public function get_user_profile_photos($id_user, $offset=null, $limit=null) {
 		$data = array();
 		$data["user_id"]=$id_user;
 		if(isset($offset)) $data["offset"]=$offset;

@@ -245,7 +245,7 @@ In general, consider the `$state` parameter optional.
 
 #### Supported Telegram Actions ####
 
-Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API) and [official Telegram Bot API](https://core.telegram.org/bots/api#sendchataction), following methods are supported:
+Relatively to messages sending instructions, accordingly to [gorebrau/PHP-telegram-bot-API](https://github.com/gorebrau/PHP-telegram-bot-API) and [official Telegram Bot API](https://core.telegram.org/bots/api#sendchataction), following methods are supported:
  * `send_action($to, $action)`
  * `send_message($to, $msg, $id_msg=null, $reply=null, $type=null, $disable_preview=true)`
  * `send_photo($to, $photo, $caption=null, $id_msg=null, $reply=null)`
@@ -257,6 +257,11 @@ Relatively to sending instructions, accordingly to [gorebrau/PHP-telegram-bot-AP
  * `send_location($to, $lat, $lon, $id_msg=null, $reply=null)`
 
 Concerning the `send_message` function, accordingly to [formatting options](https://core.telegram.org/bots/api#formatting-options) provided by Telegram API, `"Markdown"` or `"HTML"` values of the `$type` parameter can be provided.
+
+Moreover, accordingly to [official Telegram Bot API regarding messages updates](https://core.telegram.org/bots/api#updating-messages), following methods are instead supported:
+ * `edit_message($chatid=null, $message_id=null, $text, $inline_message_id=null, $parse_mode=null, $disable_web_page_preview=null, $reply_markup=null)`
+ * `edit_caption($chatid=null, $message_id=null, $inline_message_id=null, $caption=null, $reply_markup=null)`
+ * `edit_replymarkup($chatid=null, $message_id=null, $inline_message_id=null, $reply_markup=null)`
 
 It is also possible to retrive a file from `$file_id` and store it to `$output_file` through the following function:
 
@@ -447,8 +452,8 @@ Contact me to add your bot/channel to the list.
 ### Acknowledgements ###
 
 * Thanks Daniele for your support and study of [Telegram inline mode](https://core.telegram.org/bots/inline).
-* Thanks [ByteRam](https://github.com/ByteRam) for `send_voice` suggestion
-* Thanks [CheatCoder](https://github.com/CheatCoder) for your suggestions concerning `mysqli` library.
+* Thanks [ByteRam](https://github.com/ByteRam) for `send_voice` suggestion.
+* Thanks [CheatCoder](https://github.com/CheatCoder) for your suggestions concerning `mysqli` library and [Telegram messages updates](https://core.telegram.org/bots/api#updating-messages) support.
 
 ### Contacts ###
 
