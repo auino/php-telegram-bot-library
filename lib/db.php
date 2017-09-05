@@ -45,7 +45,7 @@ function db_query($q) {
 	$res = array(); // this may not be needed, since $retval already is an array
 	$row = null;
 	if($DB_USEOLDLIB) while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) array_push($res, $row);
-	else while($row = mysqli_fetch_array($retval, MYSQL_ASSOC)) array_push($res, $row);
+	else while($row = mysqli_fetch_array($retval, MYSQLI_ASSOC)) array_push($res, $row);
 	db_close($conn);
 	return $res;
 }
