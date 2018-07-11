@@ -5,7 +5,7 @@ Original project is [auino/php-telegram-bot-library](https://github.com/auino/ph
 
 This library allows you to easily set up a PHP based Telegram Bot.
 
-### Features ###
+### Features ###
 
  * Callback based
  * State machines support
