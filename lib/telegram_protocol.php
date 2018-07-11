@@ -96,8 +96,10 @@ class telegram_bot {
 		return($response);
 	}
 
-	public function get_updates() {
-		$response = $this->control_api("/getUpdates");
+	public function get_updates($offset=null) {
+		$data = array();
+		$data["offset"]=$offset;
+		$response = $this->control_api("/getUpdates", $data);
 		return($response);
 	}
 
@@ -283,15 +285,12 @@ class telegram_bot {
 		return $response;
 	}
 
-	public function set_webhook($url=null, $certificatefile=null) {
+	public function set_webhook($url=null, $certificatefile=null, $allowed_updates=null) {
 		$data = array();
 		$data["url"]=$url;
 		if($certificatefile!=null) {
-			//$f = fopen($certificatefile, "r");
-			//$certificate = fread($f,filesize($certificatefile));
-			//fclose($f);
-			//$data["certificate"] = $certificate;
 			$data["certificate"] = $certificatefile;
+			$data["allowed_updates"] = $allowed_updates;
 		}
 		$response = $this->control_api("/setWebhook", $data);
 		return $response;
