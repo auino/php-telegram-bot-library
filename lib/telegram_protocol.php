@@ -103,6 +103,11 @@ class telegram_bot {
 		return($response);
 	}
 
+	public function reset_messages_queue() {
+		$this->set_webhook();
+		return $this->get_updates(-1);
+	}
+
 	public function send_action($to, $action) {
 		$data = array();
 		$data["chat_id"]=$to;

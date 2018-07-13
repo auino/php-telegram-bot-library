@@ -338,6 +338,30 @@ At the end, it's possible to log receive and send events to database:
 
 where the initial `@` character prevents logging errors (i.e. in case of unsupported message types) to (Apache2) `error.log` file.
 
+#### Filter received messages ####
+
+In case, for instance, of a server running on a low bandwidth network, it's possible to filter received messages by using the following primitive:
+
+```php
+$bot->set_webhook($WEBHOOKURL, $SSLCERTIFICATEFILE, $ALLOWED_UPDATES);
+```
+
+In particular, the `$ALLOWED_UPDATES` array field provides the ability to limit [received updates](https://core.telegram.org/bots/api#getupdates).
+[Several values](https://core.telegram.org/bots/api#update) are permitted.
+It follows an example of adoption.
+
+```php
+$bot->set_webhook($WEBHOOKURL, null, ['message', 'edited_message', 'inline_query', 'chosen_inline_result', 'callback_query']);
+```
+
+#### Reset the message queue ####
+
+It's possible to reset the message queue of your bot through the following code:
+
+```php
+$bot->reset_messages_queue();
+```
+
 #### Database Utilities ####
 
 Following functions are available on the configured database:
