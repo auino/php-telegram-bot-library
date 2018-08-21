@@ -1,0 +1,83 @@
+<html>
+<head>
+  <title>auino/php-telegram-bot-library - Set Webhook</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" />
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div>
+      <h1><a href="https://github.com/auino/php-telegram-bot-library">php-telegram-bot-library</a> - Set Webhook</h1>
+      <br/>
+      <h6><em>Based on <a href="https://stackoverflow.com/questions/42554548/how-to-set-telegram-bot-webhook">a StackOverflow answer</a>
+    </div>
+    <div id="app" class="section">
+      <form :action="set_webhook" method="post" enctype="multipart/form-data">
+        <label class="label">Enter your Token</label>
+        <p class="control">
+          <input class="input" type="text" v-model="token" />
+        </p>
+        <label class="label">Enter your Host</label>
+        <p class="control">
+          <input class="input" type="text" v-model="host" />
+        </p>
+        <label class="label">Enter your Port</label>
+        <p class="control">
+          <input class="input" type="text" v-model="port" />
+        </p>
+
+        <input type="hidden" name="url" v-model="bot_url">
+        <label class="label">Maximum Connections?</label>
+        <p class="control">
+          <input class="input" type="text" name="max_connections" value="100" />
+        </p>
+        <br/>
+        <p style="color:blue">{{ bot_url }}</p>
+        <br/>
+        <label class="label">Enter your Certificate</label>
+        <p class="control">
+          <input type="file" name="certificate" id="fileToUpload" />
+        </p>
+        <br/>
+        <div class="control is-grouped">
+          <p class="control">
+            <button class="button is-primary" name="submit">Set Webhook</button>
+          </p>
+          <br/>
+          <p class="control">
+            <a :href="get_webhook_info" target="_blank" class="button is-info">Get Webhook Info</a>
+          </p>
+        </div>
+    </div>
+  </div>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        token: 'your-bot-token',
+        port: 8080,
+        host: 'your-server.com',
+      },
+      computed: {
+        get_webhook_info: function () {
+          return 'https://api.telegram.org/bot' + this.token + '/getwebhookinfo'
+        },
+        set_webhook: function () {
+          return 'https://api.telegram.org/bot' + this.token + '/setwebhook'
+        },
+        bot_url: function () {
+          var port = '';
+          if(this.port!="") port = ':' + this.port + '/';
+          var token = '';
+          //token = this.token;
+          return 'https://' + this.host + port + token
+        }
+      }
+    }
+
+    )
+  </script>
+</body>
+
+</html>
