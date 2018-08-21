@@ -42,7 +42,7 @@ For manual webhook registration from command line, use the following command (e.
 curl -F "url=$WEBHOOKURL" -F "certificate=$SSLCERTIFICATEFILE" https://api.telegram.org/bot$T/setWebhook
 ```
 
-Alternatively, you can use the [configure.html](https://raw.githubusercontent.com/auino/php-telegram-bot-library/master/configure.html) file to register your webhook.
+Alternatively, you can use the [configure.html](https://htmlpreview.github.io/?https://github.com/auino/php-telegram-bot-library/master/configure.html) file to register your webhook.
 
 If you have an already valid SSL certificate, ignore the `$SSLCERTIFICATEFILE` parameter and set `$REGISTERSELFSIGNEDCERTIFICATE = false`.
 
