@@ -81,5 +81,5 @@ $response = $ts->run($bot, $message); // returns an array of triggered events
 // log messages exchange on the database
 @db_log($TELEGRAM_BOTNAME, 'recv', $chatid, 'text', $text, $date);
 if(count($response)>0) foreach($response as $r) @db_log($TELEGRAM_BOTNAME, 'sent', $chatid, $r['type'], $r['content'], $date);
-else @db_log($TELEGRAM_BOTNAME, 'error', $chatid, 'Error', $date);
+else @db_log($TELEGRAM_BOTNAME, 'error', $chatid, 'Error', '', $date);
 ?>
