@@ -8,9 +8,11 @@ function db_log($botname, $action, $chat, $type, $content, $date) {
 }
 
 function db_getchatlist($botname) {
-	global $LOGS_ENABLED;
+	global $LOGS_ENABLED, $ISLOWPERFORMANCEHOST;
 	if(!$LOGS_ENABLED) return;
-	$q = "SELECT chat FROM Logs WHERE bot='$botname';";
+	$f = '';
+	if(!$ISLOWPERFORMANCEHOST) $f = " DISTINCT";
+	$q = "SELECT$f chat FROM Logs WHERE bot='$botname';";
 	$s = db_query($q);
 	$r = array();
 	foreach($s as $el) array_push($r, $el['chat']);

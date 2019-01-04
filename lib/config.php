@@ -18,4 +18,7 @@ $STATES_ENABLED=false;
 
 // logs configuration
 $LOGS_ENABLED=true;
+
+// is the program running on a low performance host (like an old RaspberryPI)?
+$ISLOWPERFORMANCEHOST=false;
 ?>
